@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+alias upd='pkg update'
+alias vs='code'
+alias d='kitty +kitten diff'
+alias s="kitty +kitten ssh"
+alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"'
+alias ls='ls --color=auto'
+alias reload='. $DOTFILES/bash/.bash_profile'
+alias gip='curl -w "\n" ifconfig.me'
+alias lip='ip addr show dev enp6s0'
+alias lk='dotfiles link'
+alias tb="template bash"
+alias ee="exa -l"
+alias el="exa -la"
+alias et="exa --git-ignore --tree"
+alias gca="git commit --amend"
+alias gr="git reset --hard HEAD~1"
+alias gpo="git pull origin master"
+alias rd="rustup doc"

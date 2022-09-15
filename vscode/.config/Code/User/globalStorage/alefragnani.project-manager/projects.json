@@ -1,0 +1,114 @@
+[
+	{
+		"name": "captify/apps/packages",
+		"rootPath": "/shared_disk/projects/captify/apps/packages",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/apps/projects",
+		"rootPath": "/shared_disk/projects/captify/apps/projects",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "wiki",
+		"rootPath": "/shared_disk/projects/wiki/wiki/dendron.code-workspace",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "_wiki",
+		"rootPath": "/shared_disk/projects/wiki",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "python",
+		"rootPath": "/shared_disk/projects/python",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "rust",
+		"rootPath": "/shared_disk/projects/rust",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/vector-space-api",
+		"rootPath": "/shared_disk/projects/captify/poly/sense-insight-planning/vector-space-api",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/apps",
+		"rootPath": "/shared_disk/projects/captify/apps",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/sense",
+		"rootPath": "/shared_disk/projects/captify/apps/projects/sense",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/sense-api",
+		"rootPath": "/shared_disk/projects/captify/apps/projects/sense-api",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/migrations",
+		"rootPath": "/shared_disk/projects/captify/migrations",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/poly",
+		"rootPath": "/shared_disk/projects/captify/poly",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/es7-middleware",
+		"rootPath": "/shared_disk/projects/captify/poly/sense-insight-planning/es7-middleware",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "dotfiles",
+		"rootPath": "/shared_disk/projects/dotfiles/dotfiles.code-workspace",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/wiki",
+		"rootPath": "/home/astralbody/Projects/wiki/captify/dendron.code-workspace",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "home",
+		"rootPath": "/home/astralbody",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	}
+]

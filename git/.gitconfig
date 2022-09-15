@@ -1,0 +1,9 @@
+[user]
+	name = Artem Kryvchun
+	email = door2cosmos@gmail.com
+	username = astralbody
+[core]
+	excludesfile = ~/.gitignore
+	editor = nano
+[init]
+	defaultBranch = main

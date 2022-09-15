@@ -1,0 +1,13 @@
+amazon-ecr-credential-helper
+elementary-planner
+git-completion
+gnome-shell-pomodoro
+gotop-bin
+postman-bin
+skypeforlinux-stable-bin
+spotify
+todoist-appimage
+ttf-symbola
+visual-studio-code-bin
+xfce-theme-greybird
+yay

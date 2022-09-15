@@ -1,0 +1,21 @@
+{
+	"name": "dotfiles",
+	"version": "1.0.0",
+	"description": "",
+	"main": "",
+	"directories": {
+		"userscripts": "userscripts"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"eslint": "^8.21.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-config-xo": "^0.41.0",
+		"prettier": "^2.7.1"
+	}
+}

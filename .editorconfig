@@ -1,0 +1,24 @@
+root = true
+
+[*]
+charset = utf-8
+insert_final_newline = true
+end_of_line = lf
+indent_style = tab
+indent_size = 4
+max_line_length = 100
+
+[*.sh]
+shell_variant = bash
+
+[*.py]
+indent_style = space
+
+[bash/**]
+ignore = false
+
+[git/**]
+ignore = true
+
+[vendor/**]
+ignore = true

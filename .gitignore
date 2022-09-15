@@ -1,0 +1,6 @@
+*.privat
+*.privat.*
+privat
+sandbox
+vendor
+node_modules

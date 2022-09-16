@@ -32,10 +32,11 @@ install_deps() {
 	local OS_RELEASE_ID
 	OS_RELEASE_ID=$(grep ^ID= /etc/os-release | sed -r 's/ID=//g')
 	local ARCH_ID="arch"
+	local DOTFILES_TMP_ARCH="$DOTFILES_TMP"/arch
 
 	if [ "$OS_RELEASE_ID" = "$ARCH_ID" ]; then
-		mkdir "$DOTFILES_TMP"/arch
-		cd "$DOTFILES"/arch
+		mkdir -p "$DOTFILES_TMP_ARCH"
+		cd "$DOTFILES_TMP_ARCH"
 
 		for file in $REPO_BLOB/arch/{pkg.sh,foreign_packages.txt,explicit_packages.txt}; do
 			curl -O $file

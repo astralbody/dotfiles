@@ -50,6 +50,7 @@ install_deps() {
 clone_dotfiles() {
 	log "Cloning Dotfiles"
 
+	mkdir "$PROJECTS"
 	cd "$PROJECTS"
 	git clone $REPO/dotfiles.git
 }

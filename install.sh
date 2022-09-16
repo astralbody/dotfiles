@@ -26,6 +26,14 @@ back() {
 	cd - >/dev/null || exit
 }
 
+download_arch() {
+	mkdir -p "$DOTFILES_TMP"/arch
+	cd "$DOTFILES_TMP"/arch
+	for file in $RAW_REPO/arch/{pkg.sh,foreign_packages.txt,explicit_packages.txt}; do
+		curl -O "$file"
+	done
+}
+
 install_deps() {
 	log "Installing dependencies"
 
@@ -34,12 +42,7 @@ install_deps() {
 	local ARCH_ID="arch"
 
 	if [ "$OS_RELEASE_ID" = "$ARCH_ID" ]; then
-		mkdir -p "$DOTFILES_TMP"/arch
-		cd "$DOTFILES_TMP"/arch
-		for file in $RAW_REPO/arch/{pkg.sh,foreign_packages.txt,explicit_packages.txt}; do
-			curl -O "$file"
-		done
-
+		download_arch
 		cd "$DOTFILES_TMP"
 		. ./arch/pkg.sh
 		pacman_install

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 pacman_install() {
 	log "Pacman is installing packages"
 	xargs pacman -S --needed --noconfirm <./arch/explicit_packages.txt

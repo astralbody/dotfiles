@@ -38,7 +38,7 @@ clone_dotfiles() {
 	log "Cloning Dotfiles"
 
 	mkdir -p "$DOTFILES"
-	# git clone REPO
+	git clone https://github.com/astralbody/dotfiles.git
 }
 
 intall_local_packages() {

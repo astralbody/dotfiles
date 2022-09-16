@@ -45,6 +45,7 @@ install_deps() {
 		download_arch
 		cd "$DOTFILES_TMP"
 		. ./arch/pkg.sh
+		pacman_update
 		pacman_install
 		yay_install
 	fi

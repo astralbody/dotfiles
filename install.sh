@@ -2,7 +2,8 @@
 
 set -e
 
-export DOTFILES=$HOME/Projects/dotfiles
+export PROJECTS=$HOME/Projects
+export DOTFILES=$PROJECTS/dotfiles
 
 err() {
 	local message=$1
@@ -37,7 +38,7 @@ install_deps() {
 clone_dotfiles() {
 	log "Cloning Dotfiles"
 
-	mkdir -p "$DOTFILES"
+	cd "$PROJECTS"
 	git clone https://github.com/astralbody/dotfiles.git
 }
 

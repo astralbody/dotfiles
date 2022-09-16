@@ -2,8 +2,11 @@
 
 set -e
 
+export REPO="https://github.com/astralbody/dotfiles"
+export REPO_BLOB="$REPO/blob/main"
 export PROJECTS=$HOME/Projects
 export DOTFILES=$PROJECTS/dotfiles
+export DOTFILES_TMP=$HOME/.dotfiles.tmp
 
 err() {
 	local message=$1
@@ -31,7 +34,16 @@ install_deps() {
 	local ARCH_ID="arch"
 
 	if [ "$OS_RELEASE_ID" = "$ARCH_ID" ]; then
-		pacman -Sy --noconfirm git
+		mkdir "$DOTFILES_TMP"/arch
+		cd "$DOTFILES"/arch
+
+		for file in $REPO_BLOB/arch/{pkg.sh,foreign_packages.txt,explicit_packages.txt}; do
+			curl -O $file
+		done
+
+		. ./pkg.sh
+		pacman_install
+		yay_install
 	fi
 }
 
@@ -39,7 +51,7 @@ clone_dotfiles() {
 	log "Cloning Dotfiles"
 
 	cd "$PROJECTS"
-	git clone https://github.com/astralbody/dotfiles.git
+	git clone $REPO/dotfiles.git
 }
 
 intall_local_packages() {

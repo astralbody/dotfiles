@@ -22,11 +22,11 @@ back() {
 	cd - >/dev/null || exit
 }
 
-install_git() {
-	log "Installing Git"
+install_deps() {
+	log "Installing dependencies"
 
 	local OS_RELEASE_ID
-	OS_RELEASE_ID=$(rg '^ID' /etc/os-release | sd 'ID=' '')
+	OS_RELEASE_ID=$(grep ^ID= /etc/os-release | sed -r 's/ID=//g')
 	local ARCH_ID="arch"
 
 	if [ "$OS_RELEASE_ID" = "$ARCH_ID" ]; then
@@ -48,7 +48,7 @@ intall_local_packages() {
 	npm install
 }
 
-install_git
+install_deps
 clone_dotfiles
 
 gotodot
@@ -64,4 +64,4 @@ dot instal
 back
 
 unset -v DOTFILES
-unset -f install_git clone_dotfiles err log gotodot back
+unset -f install_deps clone_dotfiles err log gotodot back

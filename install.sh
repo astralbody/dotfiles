@@ -51,8 +51,7 @@ clone_dotfiles() {
 	log "Cloning Dotfiles"
 
 	mkdir "$PROJECTS"
-	cd "$PROJECTS"
-	git clone $REPO/dotfiles.git
+	git clone $REPO/dotfiles.git "$PROJECTS"
 }
 
 intall_local_packages() {

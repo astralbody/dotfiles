@@ -30,7 +30,7 @@ install_deps() {
 	local ARCH_ID="arch"
 
 	if [ "$OS_RELEASE_ID" = "$ARCH_ID" ]; then
-		pacman -S --noconfirm git
+		pacman -Sy --noconfirm git
 	fi
 }
 

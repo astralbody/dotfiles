@@ -129,5 +129,8 @@
 	"javascript.suggest.paths": false,
 	"shellformat.useEditorConfig": true,
 	"editor.stickyScroll.enabled": true,
-	"window.zoomLevel": 1
+	"window.zoomLevel": 1,
+	"[dockerfile]": {
+		"editor.defaultFormatter": "ms-azuretools.vscode-docker"
+	}
 }

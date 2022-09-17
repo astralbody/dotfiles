@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-OS_RELEASE_ID=$(rg '^ID' /etc/os-release | sd 'ID=' '')
+get_os_release_id() {
+	grep ^ID= /etc/os-release | sed -r 's/ID=//g'
+}
+
+OS_RELEASE_ID="$(get_os_release_id)"
 export OS_RELEASE_ID
 export ARCH_ID="arch"
 

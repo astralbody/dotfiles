@@ -26,28 +26,27 @@ back() {
 	cd - >/dev/null || exit
 }
 
-download_arch() {
-	mkdir -p "$DOTFILES_TMP"/arch
-	cd "$DOTFILES_TMP"/arch
-	for file in $RAW_REPO/arch/{pkg.sh,foreign_packages.txt,explicit_packages.txt}; do
-		curl -O "$file"
-	done
+get_os_release_id() {
+	grep ^ID= /etc/os-release | sed -r 's/ID=//g'
+}
+
+is_arch() {
+	if [ "$OS_RELEASE_ID" = "$ARCH_ID" ]; then
+		return 0
+	else
+		return 1
+	fi
 }
 
 install_deps() {
 	log "Installing dependencies"
 
 	local OS_RELEASE_ID
-	OS_RELEASE_ID=$(grep ^ID= /etc/os-release | sed -r 's/ID=//g')
+	OS_RELEASE_ID=$(get_os_release_id)
 	local ARCH_ID="arch"
 
-	if [ "$OS_RELEASE_ID" = "$ARCH_ID" ]; then
-		download_arch
-		cd "$DOTFILES_TMP"
-		. ./arch/pkg.sh
-		pacman_update
-		pacman_install
-		yay_install
+	if is_arch; then
+		pacman -Sy --needed --noconfirm git base-devel fd
 	fi
 }
 
@@ -55,7 +54,7 @@ clone_dotfiles() {
 	log "Cloning Dotfiles"
 
 	mkdir "$PROJECTS"
-	git clone $REPO/dotfiles.git "$PROJECTS"
+	git clone $REPO.git "$DOTFILES"
 }
 
 intall_local_packages() {

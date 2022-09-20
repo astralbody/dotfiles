@@ -7,6 +7,7 @@ export RAW_REPO="https://raw.githubusercontent.com/astralbody/dotfiles/main"
 export PROJECTS=$HOME/Projects
 export DOTFILES=$PROJECTS/dotfiles
 export DOTFILES_TMP=$HOME/.dotfiles.tmp
+export DOWNLOADS="$HOME"/Downloads
 
 err() {
 	local message=$1
@@ -26,12 +27,12 @@ back() {
 	cd - >/dev/null || exit
 }
 
-get_os_release_id() {
-	grep ^ID= /etc/os-release | sed -r 's/ID=//g'
-}
-
 is_arch() {
-	if [ "$OS_RELEASE_ID" = "$ARCH_ID" ]; then
+	local arch_id="arch"
+	local os_release_id
+	os_release_id=$(grep ^ID= /etc/os-release | sed -r 's/ID=//g')
+
+	if [ "$os_release_id" = "$arch_id" ]; then
 		return 0
 	else
 		return 1
@@ -41,19 +42,20 @@ is_arch() {
 install_deps() {
 	log "Installing dependencies"
 
-	local OS_RELEASE_ID
-	OS_RELEASE_ID=$(get_os_release_id)
-	local ARCH_ID="arch"
-
 	if is_arch; then
-		pacman -Sy --needed --noconfirm git base-devel fd
+		sudo pacman -Syu --noconfirm
+		sudo pacman -S --needed --noconfirm git base-devel fd
 	fi
 }
 
 clone_dotfiles() {
 	log "Cloning Dotfiles"
 
-	mkdir "$PROJECTS"
+	if [ "$(ls "$DOTFILES")" ]; then
+		log "$DOTFILES is not empty. It won't clone dotfiles."
+		return
+	fi
+
 	git clone $REPO.git "$DOTFILES"
 }
 
@@ -63,6 +65,9 @@ intall_local_packages() {
 	pipenv install
 	npm install
 }
+
+mkdir -p "$DOWNLOADS"
+mkdir -p "$PROJECTS"
 
 install_deps
 clone_dotfiles
@@ -75,9 +80,11 @@ gotodot
 
 pkg install
 intall_local_packages
-dot instal
+dot install
 
 back
+
+log "Dotfiles installed!"
 
 unset -v DOTFILES
 unset -f install_deps clone_dotfiles err log gotodot back

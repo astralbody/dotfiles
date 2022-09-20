@@ -5,6 +5,7 @@
 
 DOTFILES=$(readlink "$HOME"/.dotfiles)
 export DOTFILES
+export DOTFILES_TMP=$HOME/.dotfiles.tmp
 
 # Automatically seach repositories when "Command not found"
 . /usr/share/doc/pkgfile/command-not-found.bash
@@ -25,6 +26,10 @@ source_launcher() {
 
 source_lib
 source_launcher
+
+# completions
+volta_completion
+pip_completion
 
 # Bash replaces directory names with the results of word expansion when performing filename completion
 # Otherwise, It will escape `$` in variable names when pressing tab

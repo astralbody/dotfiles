@@ -4,8 +4,9 @@ volta_install() {
 	goto "$HOME"
 
 	curl https://get.volta.sh | bash
-	"$DOTFILES"/volta/launcher
-
+	. "$DOTFILES"/volta/launcher.sh
+	volta setup
+	volta install node@latest yarn@latest
 	xargs volta install <"$DOTFILES"/volta/packages.txt
 
 	back

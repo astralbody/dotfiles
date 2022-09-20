@@ -2,8 +2,12 @@
 
 dropbox_install() {
 	log "Installing Dropbox"
-	cd ~ && wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
-	xh --download https://www.dropbox.com/download?dl=packages/dropbox.py
+	cd || exit
+	xh --download https://www.dropbox.com/download?plat=lnx.x86_64 --output dropbox-dist
+	tar xzf dropbox-dist
+	rm -rf dropbox-dist
+	xh --download https://www.dropbox.com/download?dl=packages/dropbox.py --output "$DOTFILES"/vendor/dropbox.py
+	log "Dropbox installed."
 }
 
 dropbox_update() {

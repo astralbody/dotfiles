@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 pip_install() {
+	gotodot
 	xargs pip install --user --isolated <./pip/packages.txt
 }
 

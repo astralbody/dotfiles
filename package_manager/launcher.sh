@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-get_os_release_id() {
-	grep ^ID= /etc/os-release | sed -r 's/ID=//g'
-}
-
-OS_RELEASE_ID="$(get_os_release_id)"
-export OS_RELEASE_ID
-export ARCH_ID="arch"
-
 source_pkg() {
 	gotodot
 
@@ -26,7 +18,11 @@ source_pkg() {
 }
 
 is_arch() {
-	if [ "$OS_RELEASE_ID" = "$ARCH_ID" ]; then
+	local arch_id="arch"
+	local os_release_id
+	os_release_id=$(grep ^ID= /etc/os-release | sed -r 's/ID=//g')
+
+	if [ "$os_release_id" = "$arch_id" ]; then
 		return 0
 	else
 		return 1

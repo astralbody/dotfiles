@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 export DOTFILES_BACKUP=$HOME/.dotfiles.backup
-export DOTFILES_TMP=$HOME/.dotfiles.tmp
 
 list_configs() {
-	exa -D "$DOTFILES" --git-ignore |
+	exa -D . --ignore-glob 'node_modules|vendor|sandbox' |
 		xargs -l fd -c never -a --exclude .gitkeep -H '^\.' --base-directory |
 		parallel extract_configs {}
 }
@@ -20,7 +19,7 @@ extract_configs() {
 setup_configs() {
 	local dotfiles_config=${1}
 	local home_config
-	home_config=$(echo "$dotfiles_config" | sd "$DOTFILES" "$HOME")
+	home_config=$(echo "$dotfiles_config" | sd "$DOTFILES"'/\w+/' "$HOME/")
 	local backup_config
 	backup_config=$(echo "$dotfiles_config" | sd "$DOTFILES" "$DOTFILES_BACKUP")
 
@@ -45,7 +44,7 @@ link_config() {
 	local target="$1"
 	local link="$2"
 
-	log "Linking $target"
+	log "Linking to $link"
 	mkdir -p -v "$(dirname "$link")" | choose 3 | sd "'" "" | sort -nr >>"$DOTFILES_TMP"/created_dirs.txt
 	ln -sf "$target" "$link"
 }
@@ -58,7 +57,7 @@ remove_links() {
 
 	while read -r link; do
 		rm "$link"
-		log "Removing the link $link"
+		log "Removing $link"
 	done <"$DOTFILES_TMP"/linked_configs.txt
 	rm "$DOTFILES_TMP"/linked_configs.txt
 }
@@ -90,4 +89,5 @@ link() {
 	make_links
 }
 
+export -f extract_configs setup_configs back_up_config link_config
 link

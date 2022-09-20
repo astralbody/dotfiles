@@ -1,5 +1,4 @@
 alsa-utils
-amazon-ecr-credential-helper
 arandr
 atool
 autoconf
@@ -21,7 +20,6 @@ docker-compose
 dog
 duf
 efibootmgr
-elementary-planner
 exa
 exo
 fakeroot
@@ -32,13 +30,10 @@ garcon
 gcc
 gimp
 git
-git-completion
 github-cli
 gnome-font-viewer
 gnome-keyring
-gnome-shell-pomodoro
 go
-gotop-bin
 gping
 groff
 grub
@@ -77,7 +72,6 @@ pavucontrol
 peek
 pkgconf
 pkgfile
-postman-bin
 pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
@@ -93,8 +87,6 @@ sd
 seahorse
 shellcheck
 shfmt
-skypeforlinux-stable-bin
-spotify
 sudo
 tealdeer
 telegram-desktop
@@ -106,24 +98,20 @@ thunar-media-tags-plugin
 thunar-volman
 tig
 tk
-todoist-appimage
 traceroute
 transmission-gtk
 ttc-iosevka
 ttf-fira-code
 ttf-fira-mono
 ttf-joypixels
-ttf-symbola
 tumbler
 udiskie
 unzip
 usbutils
-visual-studio-code-bin
 wget
 xclip
 xdg-user-dirs
 xfburn
-xfce-theme-greybird
 xfce4-appfinder
 xfce4-artwork
 xfce4-clipman-plugin
@@ -167,6 +155,5 @@ xfwm4-themes
 xh
 xorg-xlsfonts
 xorg-xman
-yay
 zip
 zoxide

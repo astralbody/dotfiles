@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 arch_install() {
-	for install in {pip,volta,dropbox,pacman,yay}_install; do
+	local install
+	for install in {yay,pacman,volta,pip,dropbox}_install; do
 		$install
 	done
-	unset -v install
 }
 
 pkg_install() {

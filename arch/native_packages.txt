@@ -78,6 +78,7 @@ pulseaudio-bluetooth
 pyenv
 python-gpgme
 python-pipenv
+python-setuptools
 python2
 ripgrep
 ristretto

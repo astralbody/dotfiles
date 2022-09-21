@@ -4,6 +4,9 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
 volta_completion() {
-	volta completions bash >"$DOTFILES_TMP/volta_completion.sh"
+	if [ ! -f "$DOTFILES_TMP/volta_completion.sh" ]; then
+		volta completions bash -o "$DOTFILES_TMP/volta_completion.sh"
+	fi
+
 	. "$DOTFILES_TMP/volta_completion.sh"
 }

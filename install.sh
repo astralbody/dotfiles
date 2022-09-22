@@ -9,50 +9,10 @@ export DOTFILES=$PROJECTS/dotfiles
 export DOTFILES_TMP=$HOME/.dotfiles.tmp
 export DOWNLOADS="$HOME"/Downloads
 
-err() {
-	local message=$1
-	echo "$message" >&2
-}
-
-log() {
-	local message=$1
-	echo "$message" >&1
-}
-
-gotodot() {
-	cd "$DOTFILES" || exit
-}
-
-back() {
-	cd - >/dev/null || exit
-}
-
-get_os_release_id() {
-	grep ^ID= /etc/os-release | sed -r 's/ID=//g'
-}
-
-is_arch() {
-	local arch_id="arch"
-	local os_release_id
-	os_release_id=$(get_os_release_id)
-
-	if [ "$os_release_id" = "$arch_id" ]; then
-		return 0
-	else
-		return 1
-	fi
-}
-
-is_debian() {
-	local debian_id="debian"
-	local os_release_id
-	os_release_id=$(get_os_release_id)
-
-	if [ "$os_release_id" = "$debian_id" ]; then
-		return 0
-	else
-		return 1
-	fi
+import_utils() {
+	mkdir -p "$DOTFILES_TMP"
+	curl $RAW_REPO/lib/utils.sh -o "$DOTFILES_TMP"/utils.sh
+	. "$DOTFILES_TMP"/utils.sh
 }
 
 install_deps() {
@@ -91,13 +51,13 @@ install_local_packages() {
 mkdir -p "$DOWNLOADS"
 mkdir -p "$PROJECTS"
 
+import_utils
 install_deps
 clone_dotfiles
 
 gotodot
 
 if is_arch; then
-	. ./lib/utils.sh
 	. ./package_manager/launcher.sh
 	. ./dotfiles/launcher.sh
 

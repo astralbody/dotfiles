@@ -63,8 +63,8 @@ install_deps() {
 		sudo pacman -S --needed --noconfirm git base-devel fd
 	fi
 	if is_debian; then
-		sudo apt update
-		sudo apt full-upgrade
+		sudo apt update -y
+		sudo apt full-upgrade -y
 		sudo apt clean
 		sudo apt install git -y
 	fi

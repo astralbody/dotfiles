@@ -26,7 +26,7 @@ install_deps() {
 		sudo apt update -y
 		sudo apt full-upgrade -y
 		sudo apt clean
-		sudo apt install git -y
+		sudo apt install git fd-find -y
 	fi
 }
 

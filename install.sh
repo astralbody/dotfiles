@@ -81,7 +81,7 @@ clone_dotfiles() {
 	git clone $REPO.git "$DOTFILES"
 }
 
-intall_local_packages() {
+install_local_packages() {
 	log "Installing local packages"
 
 	pipenv install
@@ -102,7 +102,7 @@ if is_arch; then
 	. ./dotfiles/launcher.sh
 
 	pkg install
-	intall_local_packages
+	install_local_packages
 	dot install
 
 	back

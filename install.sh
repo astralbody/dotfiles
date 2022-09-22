@@ -25,7 +25,7 @@ install_deps() {
 		sudo pacman -S --needed --noconfirm git base-devel fd
 	fi
 	if is_debian; then
-		curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
+		curl -fsSL https://deb.nodesource.com/setup_current.x | sudo bash -
 		sudo apt update -y
 		sudo apt full-upgrade -y
 		sudo apt clean

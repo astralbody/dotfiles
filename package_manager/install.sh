@@ -8,9 +8,7 @@ arch_install() {
 }
 
 debian_install() {
-	for install in {apt,volta}_install; do
-		$install
-	done
+	apt_install
 }
 
 pkg_install() {

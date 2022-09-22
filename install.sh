@@ -49,6 +49,7 @@ clone_dotfiles() {
 install_local_packages() {
 	log "Installing local packages"
 
+	pipenv --python 3.10
 	pipenv install
 	npm install
 }

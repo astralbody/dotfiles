@@ -57,16 +57,17 @@ clone_dotfiles
 
 gotodot
 
+. ./package_manager/launcher.sh
+. ./dotfiles/launcher.sh
+
+pkg install
+install_local_packages
+
 if is_arch; then
-	. ./package_manager/launcher.sh
-	. ./dotfiles/launcher.sh
-
-	pkg install
-	install_local_packages
 	dot install
-
-	back
 fi
+
+back
 log "Dotfiles installed!"
 
 unset -v DOTFILES

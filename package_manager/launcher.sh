@@ -17,16 +17,4 @@ source_pkg() {
 	back
 }
 
-is_arch() {
-	local arch_id="arch"
-	local os_release_id
-	os_release_id=$(grep ^ID= /etc/os-release | sed -r 's/ID=//g')
-
-	if [ "$os_release_id" = "$arch_id" ]; then
-		return 0
-	else
-		return 1
-	fi
-}
-
 source_pkg

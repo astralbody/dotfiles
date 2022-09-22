@@ -27,12 +27,24 @@ back() {
 	cd - >/dev/null || exit
 }
 
+get_os_release_id() {
+	grep ^ID= /etc/os-release | sed -r 's/ID=//g'
+}
+
 is_arch() {
 	local arch_id="arch"
-	local os_release_id
-	os_release_id=$(grep ^ID= /etc/os-release | sed -r 's/ID=//g')
 
-	if [ "$os_release_id" = "$arch_id" ]; then
+	if [ get_os_release_id = "$arch_id" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+is_debian() {
+	local debian_id="debian"
+
+	if [ get_os_release_id = "$debian_id" ]; then
 		return 0
 	else
 		return 1
@@ -45,6 +57,12 @@ install_deps() {
 	if is_arch; then
 		sudo pacman -Syu --noconfirm
 		sudo pacman -S --needed --noconfirm git base-devel fd
+	fi
+	if is_debian; then
+		sudo apt update
+		sudo apt full-upgrade
+		sudo apt clean
+		sudo apt install git -y
 	fi
 }
 
@@ -74,16 +92,17 @@ clone_dotfiles
 
 gotodot
 
-. ./lib/utils.sh
-. ./package_manager/launcher.sh
-. ./dotfiles/launcher.sh
+if is_arch; then
+	. ./lib/utils.sh
+	. ./package_manager/launcher.sh
+	. ./dotfiles/launcher.sh
 
-pkg install
-intall_local_packages
-dot install
+	pkg install
+	intall_local_packages
+	dot install
 
-back
-
+	back
+fi
 log "Dotfiles installed!"
 
 unset -v DOTFILES

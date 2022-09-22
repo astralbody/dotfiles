@@ -116,4 +116,32 @@ is_link_broken() {
 	return 1
 }
 
-export -f goto gotodot back log err is_link_broken
+get_os_release_id() {
+	grep ^ID= /etc/os-release | sed -r 's/ID=//g'
+}
+
+is_arch() {
+	local arch_id="arch"
+	local os_release_id
+	os_release_id=$(get_os_release_id)
+
+	if [ "$os_release_id" = "$arch_id" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+is_debian() {
+	local debian_id="debian"
+	local os_release_id
+	os_release_id=$(get_os_release_id)
+
+	if [ "$os_release_id" = "$debian_id" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+export -f goto gotodot back log err is_link_broken is_debian is_arch

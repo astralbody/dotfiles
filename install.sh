@@ -31,7 +31,7 @@ install_deps() {
 		sudo apt clean
 		sudo apt install git fd-find build-essential nodejs -y
 		mkdir -p "$BIN"
-		sudo ln -s "$(which fdfind)" "$BIN"/fd
+		sudo ln -sf "$(which fdfind)" "$BIN"/fd
 	fi
 }
 

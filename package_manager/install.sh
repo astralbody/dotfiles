@@ -7,9 +7,17 @@ arch_install() {
 	done
 }
 
+debian_install() {
+	apt_install
+}
+
 pkg_install() {
 	if is_arch; then
 		log "Installing packages on Arch"
 		arch_install
+	fi
+	if is_debian; then
+		log "Installing packages on Debian"
+		debian_install
 	fi
 }

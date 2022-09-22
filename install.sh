@@ -33,8 +33,10 @@ get_os_release_id() {
 
 is_arch() {
 	local arch_id="arch"
+	local os_release_id
+	os_release_id=$(get_os_release_id)
 
-	if [ get_os_release_id = "$arch_id" ]; then
+	if [ "$os_release_id" = "$arch_id" ]; then
 		return 0
 	else
 		return 1
@@ -43,8 +45,10 @@ is_arch() {
 
 is_debian() {
 	local debian_id="debian"
+	local os_release_id
+	os_release_id=$(get_os_release_id)
 
-	if [ get_os_release_id = "$debian_id" ]; then
+	if [ "$os_release_id" = "$debian_id" ]; then
 		return 0
 	else
 		return 1

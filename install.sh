@@ -8,6 +8,8 @@ export PROJECTS=$HOME/Projects
 export DOTFILES=$PROJECTS/dotfiles
 export DOTFILES_TMP=$HOME/.dotfiles.tmp
 export DOWNLOADS="$HOME"/Downloads
+export BIN=$HOME/.local/bin
+export PATH=$PATH:"$HOME"/.local/bin
 
 import_utils() {
 	mkdir -p "$DOTFILES_TMP"
@@ -27,6 +29,8 @@ install_deps() {
 		sudo apt full-upgrade -y
 		sudo apt clean
 		sudo apt install git fd-find -y
+		mkdir -p "$BIN"
+		sudo ln -s "$(which fdfind)" "$BIN"/fd
 	fi
 }
 

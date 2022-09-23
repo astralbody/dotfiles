@@ -1,2 +1,5 @@
-pipenv
+build-essential
 fd-find
+git
+nodejs
+pipenv

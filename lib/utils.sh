@@ -144,4 +144,8 @@ is_debian() {
 	fi
 }
 
-export -f goto gotodot back log err is_link_broken is_debian is_arch
+reload() {
+	exec $SHELL
+}
+
+export -f goto gotodot back log err is_link_broken is_debian is_arch reload

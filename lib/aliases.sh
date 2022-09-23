@@ -6,7 +6,6 @@ alias d='kitty +kitten diff'
 alias s="kitty +kitten ssh"
 alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"'
 alias ls='ls --color=auto'
-alias reload='. $DOTFILES/bash/.bash_profile'
 alias gip='curl -w "\n" ifconfig.me'
 alias lip='ip addr show dev enp6s0'
 alias lk='dotfiles link'

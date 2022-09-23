@@ -1,4 +1,0 @@
-eslint
-nx
-parcel
-webpack

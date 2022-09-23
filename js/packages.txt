@@ -1,0 +1,4 @@
+eslint
+nx
+parcel
+webpack

@@ -8,7 +8,10 @@ arch_install() {
 }
 
 debian_install() {
-	apt_install
+	local install
+	for install in {nodejs,pyenv,apt}_install; do
+		$install
+	done
 }
 
 pkg_install() {

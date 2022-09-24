@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 
 volta_install() {
-	goto "$HOME"
+	home
 
 	curl https://get.volta.sh | bash
-	. "$DOTFILES"/volta/launcher.sh
+	. "$DOTFILES"/js/launcher.sh
 	volta setup
 	volta install node@latest yarn@latest
-	xargs volta install <"$DOTFILES"/volta/packages.txt
+	xargs volta install <"$DOTFILES"/js/packages.txt
 
 	back
 }
 
 volta_update() {
 	log "Npm is updating packages"
-	npm update --global <./volta/packages.txt
+	npm update --global <./js/packages.txt
 }
 
 volta_refresh() {
-	volta list --format plain | rg package | choose 1 | tail -n +3 | sd '@.+' '' >./volta/packages.txt
+	volta list --format plain | rg package | choose 1 | tail -n +3 | sd '@.+' '' >./js/packages.txt
 }
 
 nodejs_install() {

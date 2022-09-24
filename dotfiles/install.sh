@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-export DOTFILES_BACKUP=$HOME/.dotfiles.backup
-
 list_configs() {
 	exa -D . --ignore-glob 'node_modules|vendor|sandbox' |
 		xargs -l fd -c never -a --exclude .gitkeep -H '^\.' --base-directory |
@@ -82,8 +80,6 @@ make_links() {
 
 link() {
 	set -e
-	mkdir -p "$DOTFILES_BACKUP"
-	mkdir -p "$DOTFILES_TMP"
 	remove_links
 	remove_created_dirs
 	make_links

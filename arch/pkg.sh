@@ -2,6 +2,7 @@
 
 pacman_install() {
 	log "Pacman is installing packages"
+	pacman_update
 	xargs sudo pacman --sync --needed --noconfirm <./arch/native_packages.txt
 }
 
@@ -24,11 +25,11 @@ pacman_refresh() {
 
 yay_install() {
 	log "Installing yay"
-	cd || exit
+	home
 	git clone https://aur.archlinux.org/yay.git
 	cd yay || exit
 	makepkg --syncdeps --needed --rmdeps --install --noconfirm
-	cd || exit
+	home
 	rm -rf yay
 
 	log "Yay is installing packages"

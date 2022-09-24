@@ -6,7 +6,7 @@ RUN useradd --system --create-home $user \
 	&& echo "$user ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/$user
 USER $user
 WORKDIR /home/$user
-RUN mkdir -p Projects/dotfiles
-COPY . Projects/dotfiles
+RUN mkdir -p /home/$user/.dotfiles/dotfiles
+COPY . /home/$user/.dotfiles/dotfiles
 
-ENTRYPOINT ["./Projects/dotfiles/install.sh"]
+ENTRYPOINT ["./.dotfiles/dotfiles/install.sh"]

@@ -1,80 +1,99 @@
 #!/usr/bin/env bash
 
+export REPO="https://github.com/astralbody/dotfiles"
+export PYTHON_VER="3.10.6"
+
+export DOTDOTFILES=$HOME/.dotfiles
+export DOTFILES=$DOTDOTFILES/dotfiles
+export DOTFILES_TMP=$DOTDOTFILES/tmp
+export DOTFILES_BACKUP=$DOTDOTFILES/backup
+
+shopt -s globstar
 set -e
 
-export REPO="https://github.com/astralbody/dotfiles"
-export RAW_REPO="https://raw.githubusercontent.com/astralbody/dotfiles/main"
-export PROJECTS=$HOME/Projects
-export DOTFILES=$PROJECTS/dotfiles
-export DOTFILES_TMP=$HOME/.dotfiles.tmp
-export DOWNLOADS="$HOME"/Downloads
-export BIN=$HOME/.local/bin
-export PATH=$PATH:"$HOME"/.local/bin
-
-import_utils() {
-	mkdir -p "$DOTFILES_TMP"
-	curl $RAW_REPO/lib/utils.sh -o "$DOTFILES_TMP"/utils.sh
-	. "$DOTFILES_TMP"/utils.sh
-}
-
-install_deps() {
-	log "Installing dependencies"
-
-	if is_arch; then
-		sudo pacman -Syu --noconfirm
-		sudo pacman -S --needed --noconfirm git base-devel fd
-	fi
-	if is_debian; then
-		curl -fsSL https://deb.nodesource.com/setup_current.x | sudo bash -
-		sudo apt update -y
-		sudo apt full-upgrade -y
-		sudo apt clean
-		sudo apt install git fd-find build-essential nodejs -y
-		mkdir -p "$BIN"
-		sudo ln -sf "$(which fdfind)" "$BIN"/fd
-	fi
-}
-
-clone_dotfiles() {
-	log "Cloning Dotfiles"
+load_dotfiles() {
+	cd "$DOTFILES" || exit
 
 	if [ "$(ls "$DOTFILES")" ]; then
-		log "$DOTFILES is not empty. It won't clone dotfiles."
+		echo "$DOTFILES is not empty. It won't load dotfiles."
 		return
 	fi
 
-	git clone $REPO.git "$DOTFILES"
+	echo "Dofiles is loading..."
+	curl "$REPO/archive/refs/heads/main.zip" --output "$DOTFILES_TMP/dotfiles-main.zip"
+	unzip "$DOTFILES_TMP/dotfiles-main.zip" -d "$DOTFILES_TMP"
+	rm "$DOTFILES_TMP"/dotfiles-main.zip
+	mv "$DOTFILES_TMP/dotfiles-main" "$DOTFILES"
 }
 
-install_local_packages() {
-	log "Installing local packages"
+source_lib() {
+	echo "Sourcing lib..."
+	local lib
+	for lib in ./lib/{environment,utils}.sh; do
+		. "$lib"
+	done
+}
 
-	pipenv --python 3.10
+install_system_packages() {
+	. ./package_manager/launcher.sh
+	pkg install
+}
+
+install_dotfiles_packages() {
+	log "Installing local packages..."
+
+	pyenv install $PYTHON_VER
+	pyenv local $PYTHON_VER
 	pipenv install
 	npm install
 }
 
-mkdir -p "$DOWNLOADS"
-mkdir -p "$PROJECTS"
-
-import_utils
-install_deps
-clone_dotfiles
-
-gotodot
-
-. ./package_manager/launcher.sh
-. ./dotfiles/launcher.sh
-
-pkg install
-install_local_packages
-
-if is_arch; then
+link_dotfiles() {
+	. ./dotfiles/launcher.sh
 	dot install
-fi
+}
 
-back
-log "Dotfiles installed!"
+clean_env() {
+	echo "Cleaning environment..."
+	unset -v REPO DOTFILES PYTHON_VER
+	unset -f load_dotfiles source_lib install_system_packages install_system_packages install_dotfiles_packages link_dotfiles
+}
 
-unset -v DOTFILES
-unset -f install_deps clone_dotfiles err log gotodot back
+create_dotfiles_dirs() {
+	dirs=("$DOTDOTFILES" "$DOTFILES" "$DOTFILES_TMP" "$DOTFILES_BACKUP")
+	for dir in "${dirs[@]}"; do
+		mkdir -p "$dir"
+	done
+}
+
+create_user_dirs() {
+	ln -sf ./xdg_user_dirs/.config/user-dirs.dirs "$HOME"/.config/user-dirs.dirs
+	ln -sf ./xdg_user_dirs/.config/user-dirs.locale "$HOME"/.config/user-dirs.locale
+	xdg-user-dirs-update
+	rm "$HOME"/.config/user-dirs.dirs
+	rm "$HOME"/.config/user-dirs.locale
+
+	local projects_dotfiles
+	projects_dotfiles="$(xdg-user-dir PROJECTS)/dotfiles"
+	mv "$DOTFILES" "$projects_dotfiles"
+	ln -sf "$projects_dotfiles" "$DOTFILES"
+	DOTFILES=$projects_dotfiles
+}
+
+install_dotfiles() {
+	trap 'clear_env' ERR
+	echo "Dotfiles is installing..."
+
+	create_dotfiles_dirs
+	load_dotfiles
+	source_lib
+	install_system_packages
+	install_dotfiles_packages
+	create_user_dirs
+	link_dotfiles
+	clean_env
+
+	echo "Dotfiles installed!"
+}
+
+install_dotfiles

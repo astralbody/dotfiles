@@ -3,6 +3,14 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# If set, the pattern ** used in a pathname expansion context will match all files and zero or more directories
+# and subdirectories.  If the pattern is followed by a /, only directories and subdirectories match
+shopt -s globstar
+
+# Bash replaces directory names with the results of word expansion when performing filename completion
+# Otherwise, It will escape `$` in variable names when pressing tab
+shopt -s direxpand
+
 DOTFILES=$(readlink "$HOME"/.dotfiles)
 export DOTFILES
 
@@ -28,7 +36,3 @@ source_launcher
 
 python_launcher
 volta_completion
-
-# Bash replaces directory names with the results of word expansion when performing filename completion
-# Otherwise, It will escape `$` in variable names when pressing tab
-shopt -s direxpand

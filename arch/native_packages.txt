@@ -58,6 +58,7 @@ neofetch
 network-manager-applet
 networkmanager
 networkmanager-openvpn
+nmap
 noto-fonts-cjk
 noto-fonts-emoji
 ntfs-3g
@@ -79,7 +80,6 @@ pyenv
 python-gpgme
 python-pipenv
 python-setuptools
-python2
 ripgrep
 ristretto
 rsync

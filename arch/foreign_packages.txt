@@ -4,6 +4,7 @@ git-completion
 gnome-shell-pomodoro
 gotop-bin
 postman-bin
+rpi-imager
 skypeforlinux-stable-bin
 spotify
 todoist-appimage

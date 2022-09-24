@@ -26,6 +26,10 @@ gotodot() {
 	cd "$DOTFILES" || exit
 }
 
+home() {
+	cd || exit
+}
+
 back() {
 	cd - >/dev/null || exit
 }

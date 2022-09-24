@@ -2,7 +2,7 @@
 
 arch_install() {
 	local install
-	for install in {yay,pacman,volta,pip,dropbox}_install; do
+	for install in {pacman,yay,volta,pip,dropbox}_install; do
 		$install
 	done
 }

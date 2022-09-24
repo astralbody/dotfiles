@@ -2,7 +2,7 @@
 
 dropbox_install() {
 	log "Installing Dropbox"
-	cd || exit
+	home
 	xh --download https://www.dropbox.com/download?plat=lnx.x86_64 --output dropbox-dist
 	tar xzf dropbox-dist
 	rm -rf dropbox-dist

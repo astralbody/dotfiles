@@ -2,12 +2,12 @@
 
 pip_install() {
 	gotodot
-	xargs pip install --user --isolated <./pip/packages.txt
+	xargs pip install --user --isolated <./python/packages.txt
 }
 
 pip_update() {
 	log "Pip is updating packages"
-	xargs pip install --user --isolated --upgrade <./pip/packages.txt
+	xargs pip install --user --isolated --upgrade <./python/packages.txt
 }
 
 pip_refresh() {

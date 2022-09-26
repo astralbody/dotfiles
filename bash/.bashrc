@@ -11,7 +11,7 @@ shopt -s globstar
 # Otherwise, It will escape `$` in variable names when pressing tab
 shopt -s direxpand
 
-DOTFILES=$(readlink "$HOME"/.dotfiles)
+DOTFILES=$(readlink "$HOME"/.dotfiles/dotfiles)
 export DOTFILES
 
 # Automatically seach repositories when "Command not found"
@@ -19,20 +19,33 @@ export DOTFILES
 
 source_lib() {
 	local lib
-	for lib in "$DOTFILES"/lib/{environment,aliases,utils}.sh; do
+	for lib in "$DOTFILES"/lib/{environment,utils,aliases}.sh; do
 		. "$lib"
 	done
 }
 
-source_launcher() {
-	local launcher
-	for launcher in $(fd -a --no-ignore-vcs launcher.sh --base-directory "$DOTFILES"); do
+source_droplet_launchers() {
+	local droplet
+	for droplet in "$@"; do
+		local launcher=$DOTFILES/$droplet/launcher.sh
+
+		if [ ! -f "$launcher" ]; then
+			continue
+		fi
+
 		. "$launcher"
 	done
 }
 
-source_lib
-source_launcher
+source_launchers() {
+	if is_rpi; then
+		source_droplet_launchers "${RPI_DOTLETS[@]}"
+	else
+		source_droplet_launchers "${PC_DOTLETS[@]}"
+	fi
+}
 
-python_launcher
+source_lib
+set_paths
+source_launchers
 volta_completion

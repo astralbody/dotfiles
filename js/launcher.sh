@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
+set_path "$VOLTA_HOME/bin"
 
 volta_completion() {
 	if [ ! -f "$DOTFILES_TMP/volta_completion.sh" ]; then
@@ -10,3 +10,5 @@ volta_completion() {
 
 	. "$DOTFILES_TMP/volta_completion.sh"
 }
+
+volta_completion

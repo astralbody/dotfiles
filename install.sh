@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export REPO="https://github.com/astralbody/dotfiles"
+export DOTFILES_ZIP="https://codeload.github.com/astralbody/dotfiles/zip/refs/heads/main"
 export PYTHON_VER="3.10.6"
 
 export DOTDOTFILES=$HOME/.dotfiles
@@ -32,7 +32,7 @@ load_dotfiles() {
 	fi
 
 	echo "Dofiles is loading..."
-	curl "$REPO/archive/refs/heads/main.zip" --output "$DOTFILES_TMP/dotfiles-main.zip"
+	curl $DOTFILES_ZIP --output "$DOTFILES_TMP/dotfiles-main.zip"
 	unzip "$DOTFILES_TMP/dotfiles-main.zip" -d "$DOTFILES_TMP"
 	rm "$DOTFILES_TMP"/dotfiles-main.zip
 	mv "$DOTFILES_TMP/dotfiles-main" "$DOTFILES"

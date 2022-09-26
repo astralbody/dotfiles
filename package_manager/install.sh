@@ -2,14 +2,14 @@
 
 arch_install() {
 	local install
-	for install in {pacman,yay,volta,pip,dropbox}_install; do
+	for install in {pacman,yay,python,js,dropbox,xdg_user_dirs}_install; do
 		$install
 	done
 }
 
 debian_install() {
 	local install
-	for install in {nodejs,pyenv,apt}_install; do
+	for install in {js,apt,python,xdg_user_dirs}_install; do
 		$install
 	done
 }

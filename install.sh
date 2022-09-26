@@ -11,7 +11,7 @@ export DOTFILES_BACKUP=$DOTDOTFILES/backup
 shopt -s globstar
 set -e
 set -o pipefail
-set -u
+# set -u
 
 create_dotfiles_dirs() {
 	echo "Creating dotfiles dirs..."

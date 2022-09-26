@@ -21,28 +21,34 @@ save_log() {
 goto() {
 	cd "$(dirname "$(realpath "$1")")" || exit
 }
+export -f goto
 
 gotodot() {
 	cd "$DOTFILES" || exit
 }
+export -f gotodot
 
 home() {
 	cd || exit
 }
+export -f home
 
 back() {
 	cd - >/dev/null || exit
 }
+export -f back
 
 err() {
 	local message=$1
 	echo "$message" >&2
 }
+export -f err
 
 log() {
 	local message=$1
 	echo "$message" >&1
 }
+export -f log
 
 clean_docker() {
 	docker stop "$(docker ps -a -q)"
@@ -61,20 +67,6 @@ remove_empty_dirs() {
 	fi
 
 	fd -a -te -td --prune --base-directory "$base_directory" --exec rm -d
-}
-
-generate_ssh() {
-	local email=$1
-	local file_name=$2
-	local password=$3
-	local SSH_DIR="$HOME"/.ssh
-
-	cd "$SSH_DIR" || exit
-	printf "%s\n%s\n" "$file_name" "$password" | ssh-keygen -t rsa -b 4096 -C "$email"
-	eval "$(ssh-agent -s)"
-	printf "%s\n" "$password" | ssh-add "$SSH_DIR"/"$file_name"
-	xclip -sel clip <"$SSH_DIR"/"$file_name".pub
-	back
 }
 
 add_alias() {
@@ -123,6 +115,7 @@ is_link_broken() {
 get_os_release_id() {
 	grep ^ID= /etc/os-release | sed -r 's/ID=//g'
 }
+export -f get_os_release_id
 
 is_arch() {
 	local arch_id="arch"
@@ -135,6 +128,7 @@ is_arch() {
 		return 1
 	fi
 }
+export -f is_arch
 
 is_debian() {
 	local debian_id="debian"
@@ -147,9 +141,39 @@ is_debian() {
 		return 1
 	fi
 }
+export -f is_debian
+
+is_rpi() {
+	if is_debian && [ "$(arch)" == "aarch64" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+export -f is_rpi
 
 reload() {
 	exec $SHELL
 }
 
-export -f goto gotodot back log err is_link_broken is_debian is_arch reload
+set_path() {
+	# Check if user id is 1000 or higher
+	[ "$(id -u)" -ge 1000 ] || return
+
+	for i in "$@"; do
+		# Check if the directory exists
+		[ -d "$i" ] || continue
+
+		# Check if it is not already in your $PATH.
+		echo "$PATH" | grep -Eq "(^|:)$i(:|$)" && continue
+
+		# Then append it to $PATH and export it
+		export PATH="${PATH}:$i"
+	done
+}
+export -f set_path
+
+set_paths() {
+	set_path "${USER_PATHS[@]}"
+}
+export -f set_paths

@@ -5,8 +5,10 @@ CONTAINER=$IMAGE-debug
 VER=0
 TAG="$IMAGE":"$VER"
 
+docker rm -f "$CONTAINER"
+docker image rm -f $TAG || true
+
 # build an image
-docker image rm -f $TAG
 # TODO:
 # --no-cache can be removed to improve speed,
 # but I must not commit it because sometimes
@@ -15,5 +17,4 @@ docker image rm -f $TAG
 docker build --no-cache --tag $TAG .
 
 # create a container
-docker rm -f "$CONTAINER"
 docker run -it --name $CONTAINER $TAG

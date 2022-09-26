@@ -10,8 +10,20 @@ export DOTFILES_BACKUP=$DOTDOTFILES/backup
 
 shopt -s globstar
 set -e
+set -o pipefail
+set -u
+
+create_dotfiles_dirs() {
+	echo "Creating dotfiles dirs..."
+
+	dirs=("$DOTDOTFILES" "$DOTFILES" "$DOTFILES_TMP" "$DOTFILES_BACKUP")
+	for dir in "${dirs[@]}"; do
+		mkdir -p "$dir"
+	done
+}
 
 load_dotfiles() {
+	create_dotfiles_dirs
 	cd "$DOTFILES" || exit
 
 	if [ "$(ls "$DOTFILES")" ]; then
@@ -34,7 +46,16 @@ source_lib() {
 	done
 }
 
+install_paths() {
+	log "Installing paths..."
+	mkdir -p "$USER_BIN"
+	set_paths
+}
+
 install_system_packages() {
+	log "Installing system packages..."
+
+	gotodot
 	. ./package_manager/launcher.sh
 	pkg install
 }
@@ -42,6 +63,7 @@ install_system_packages() {
 install_dotfiles_packages() {
 	log "Installing local packages..."
 
+	gotodot
 	pyenv install $PYTHON_VER
 	pyenv local $PYTHON_VER
 	pipenv install
@@ -49,50 +71,34 @@ install_dotfiles_packages() {
 }
 
 link_dotfiles() {
+	gotodot
 	. ./dotfiles/launcher.sh
 	dot install
 }
 
 clean_env() {
 	echo "Cleaning environment..."
-	unset -v REPO DOTFILES PYTHON_VER
-	unset -f load_dotfiles source_lib install_system_packages install_system_packages install_dotfiles_packages link_dotfiles
-}
-
-create_dotfiles_dirs() {
-	dirs=("$DOTDOTFILES" "$DOTFILES" "$DOTFILES_TMP" "$DOTFILES_BACKUP")
-	for dir in "${dirs[@]}"; do
-		mkdir -p "$dir"
-	done
-}
-
-create_user_dirs() {
-	ln -sf ./xdg_user_dirs/.config/user-dirs.dirs "$HOME"/.config/user-dirs.dirs
-	ln -sf ./xdg_user_dirs/.config/user-dirs.locale "$HOME"/.config/user-dirs.locale
-	xdg-user-dirs-update
-	rm "$HOME"/.config/user-dirs.dirs
-	rm "$HOME"/.config/user-dirs.locale
-
-	local projects_dotfiles
-	projects_dotfiles="$(xdg-user-dir PROJECTS)/dotfiles"
-	mv "$DOTFILES" "$projects_dotfiles"
-	ln -sf "$projects_dotfiles" "$DOTFILES"
-	DOTFILES=$projects_dotfiles
+	unset -v REPO
+	unset -v PYTHON_VER
+	unset -f create_dotfiles_dirs
+	unset -f load_dotfiles
+	unset -f source_lib
+	unset -f install_system_packages
+	unset -f install_dotfiles_packages
+	unset -f link_dotfiles
+	unset -f clean_env
+	unset -f install_dotfiles
 }
 
 install_dotfiles() {
-	trap 'clear_env' ERR
 	echo "Dotfiles is installing..."
-
-	create_dotfiles_dirs
 	load_dotfiles
 	source_lib
+	install_paths
 	install_system_packages
 	install_dotfiles_packages
-	create_user_dirs
 	link_dotfiles
 	clean_env
-
 	echo "Dotfiles installed!"
 }
 

@@ -18,7 +18,7 @@ pipenv_completion() {
 }
 
 pyenv_launcher() {
-	export PATH="$HOME/.pyenv/bin:$PATH"
+	set_path "$HOME/.pyenv/bin"
 	eval "$(pyenv init --path)"
 	eval "$(pyenv virtualenv-init -)"
 }
@@ -28,3 +28,5 @@ python_launcher() {
 	pip_completion
 	pipenv_completion
 }
+
+python_launcher

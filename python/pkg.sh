@@ -19,6 +19,14 @@ pip_refresh() {
 }
 
 pyenv_install() {
+	home
 	curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-	reload
+	# git clone https://github.com/pyenv/pyenv-virtualenv.git "$HOME/.pyenv/plugins/pyenv-virtualenv"
+}
+
+python_install() {
+	pyenv_install
+	pip_install
+	gotodot
+	. ./python/launcher.sh
 }

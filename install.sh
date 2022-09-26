@@ -35,7 +35,8 @@ load_dotfiles() {
 	curl $DOTFILES_ZIP --output "$DOTFILES_TMP/dotfiles-main.zip"
 	unzip "$DOTFILES_TMP/dotfiles-main.zip" -d "$DOTFILES_TMP"
 	rm "$DOTFILES_TMP"/dotfiles-main.zip
-	mv "$DOTFILES_TMP/dotfiles-main" "$DOTFILES"
+	cd "$DOTFILES_TMP"/dotfiles-main
+	cp -r . "$DOTFILES"
 }
 
 source_lib() {

@@ -4,7 +4,7 @@ apt_install() {
 	log "Apt is installing packages"
 	apt_update
 	xargs sudo apt -y install <./debian/packages.txt
-	sudo ln -sf "$(which fdfind)" "$BIN"/fd
+	sudo ln -sf "$(which fdfind)" "$USER_BIN"/fd
 }
 
 apt_update() {

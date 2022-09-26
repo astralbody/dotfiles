@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 list_configs() {
-	exa -D . --ignore-glob 'node_modules|vendor|sandbox' |
-		xargs -l fd -c never -a --exclude .gitkeep -H '^\.' --base-directory |
+	fd -c never -a --exclude .gitkeep -H '^\.' --base-directory "$1" |
 		parallel extract_configs {}
 }
+export -f list_configs
 
 extract_configs() {
 	if [ -d "$1" ]; then
@@ -13,6 +13,7 @@ extract_configs() {
 		echo "$1"
 	fi
 }
+export -f extract_configs
 
 setup_configs() {
 	local dotfiles_config=${1}
@@ -26,6 +27,7 @@ setup_configs() {
 
 	echo "$home_config" >>"$DOTFILES_TMP"/linked_configs.txt
 }
+export -f setup_configs
 
 back_up_config() {
 	local home_dotfile="$1"
@@ -37,6 +39,7 @@ back_up_config() {
 		mv -f "$home_dotfile" "$backup_dotfile"
 	fi
 }
+export -f back_up_config
 
 link_config() {
 	local target="$1"
@@ -46,6 +49,7 @@ link_config() {
 	mkdir -p -v "$(dirname "$link")" | choose 3 | sd "'" "" | sort -nr >>"$DOTFILES_TMP"/created_dirs.txt
 	ln -sf "$target" "$link"
 }
+export -f link_config
 
 remove_links() {
 	if [ ! -e "$DOTFILES_TMP"/linked_configs.txt ]; then
@@ -74,16 +78,22 @@ remove_created_dirs() {
 }
 
 make_links() {
-	touch "$DOTFILES_TMP"/linked_configs.txt
-	list_configs | parallel setup_configs {}
+	local droplet
+	for droplet in "$@"; do
+		list_configs "$droplet" | parallel setup_configs {}
+	done
 }
+export -f make_links
 
 link() {
-	set -e
 	remove_links
 	remove_created_dirs
-	make_links
-}
 
-export -f extract_configs setup_configs back_up_config link_config
-link
+	touch "$DOTFILES_TMP"/linked_configs.txt
+	if is_rpi; then
+		make_links "${RPI_DOTLETS[@]}"
+	else
+		make_links "${PC_DOTLETS[@]}"
+	fi
+}
+export -f link

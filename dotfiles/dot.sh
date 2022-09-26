@@ -30,7 +30,8 @@ dot() {
 	case $1 in
 	install)
 		log "Linking configs"
-		./dotfiles/install.sh
+		. ./dotfiles/install.sh
+		link
 		;;
 	publish)
 		log "Publishing configs"

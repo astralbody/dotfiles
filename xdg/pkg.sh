@@ -14,14 +14,12 @@ move_dotfiles_to_projects() {
 	DOTFILES=$projects_dotfiles
 }
 
-xdg_user_dirs_install() {
+xdg_install() {
 	echo "Creating user dirs..."
 	gotodot
 
-	mkdir -p "$USER_CONFIG"
-	ln -s ./xdg_user_dirs/.config/user-dirs.dirs "$USER_CONFIG/user-dirs.dirs"
-
+	sudo rm /etc/xdg/user-dirs.defaults
+	sudo cp ./xdg/user-dirs.defaults /etc/xdg/
 	xdg-user-dirs-update
-	rm "$USER_CONFIG/user-dirs.dirs"
 	move_dotfiles_to_projects
 }

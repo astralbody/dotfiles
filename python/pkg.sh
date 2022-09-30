@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
 pip_install() {
+	log "Installing pip packages..."
 	gotodot
 	xargs pip install --user --isolated <./python/packages.txt
 }
 
 pip_update() {
-	log "Pip is updating packages"
+	log "Updating pip packages..."
+	gotodot
 	xargs pip install --user --isolated --upgrade <./python/packages.txt
 }
 
@@ -29,4 +31,8 @@ python_install() {
 	pip_install
 	gotodot
 	. ./python/launcher.sh
+}
+
+python_update() {
+	pip_update
 }

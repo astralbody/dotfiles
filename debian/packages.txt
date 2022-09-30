@@ -1,6 +1,3 @@
-build-essential
-fd-find
-git
-nodejs
-pipenv
 xdg-user-dirs
+parallel
+exa

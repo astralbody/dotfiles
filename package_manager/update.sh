@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
-arch_update() {
-	for update in {pip,volta,dropbox,beekeeper,pacman,yay}_update; do
-		$update
-	done
-	unset -v update
-}
-
 pkg_update() {
+	if is_rpi; then
+		log "Updating debian packages..."
+		debian_update
+	fi
 	if is_arch; then
-		log "Updating packages on Arch"
+		log "Updating arch packages..."
 		arch_update
 	fi
 }

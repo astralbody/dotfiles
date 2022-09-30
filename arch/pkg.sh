@@ -47,3 +47,21 @@ yay_clean() {
 	yay -Yc
 	yay -Ps
 }
+
+arch_install() {
+	local install
+	for install in {pacman,yay,python,js,dropbox,xdg,rust}_install; do
+		$install
+	done
+}
+
+arch_update() {
+	pacman_update
+	yay_update
+	yay_clean
+	beekeeper_update
+	dropbox_update
+	js_update
+	python_update
+	rust_update
+}

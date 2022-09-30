@@ -8,6 +8,8 @@ TAG="$IMAGE":"$VER"
 docker rm -f "$CONTAINER"
 docker image rm -f $TAG || true
 
+gotodot
+
 # build an image
 # TODO:
 # --no-cache can be removed to improve speed,

@@ -14,9 +14,6 @@ shopt -s direxpand
 DOTFILES=$(readlink "$HOME"/.dotfiles/dotfiles)
 export DOTFILES
 
-# Automatically seach repositories when "Command not found"
-. /usr/share/doc/pkgfile/command-not-found.bash
-
 source_lib() {
 	local lib
 	for lib in "$DOTFILES"/lib/{environment,utils,aliases}.sh; do
@@ -45,7 +42,14 @@ source_launchers() {
 	fi
 }
 
+upgrade_command_not_found() {
+	# Automatically seach repositories when "Command not found"
+	if is_arch; then
+		. /usr/share/doc/pkgfile/command-not-found.bash
+	fi
+}
+
 source_lib
 set_paths
 source_launchers
-volta_completion
+upgrade_command_not_found

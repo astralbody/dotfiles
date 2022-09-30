@@ -9,7 +9,8 @@ curl https://raw.githubusercontent.com/astralbody/dotfiles/main/install.sh | bas
 ```
 ## Debug
 
-`debug_install.sh` allows to debug `install.sh`. I need to install all packages when running `install.sh`, and I cannot use my operating system with installed packages. I decided to use Docker to resolve it.
+- `./devtools/install_on_arch.sh` allows to test the install script on Arch Linux in Docker container. It uses Dotfiles in the root to build the dotfiles image.
+- `./devtools/install_on_rpi.sh` allows to install dotfiles on Raspberry PI using SSH.
 
 ## References
 

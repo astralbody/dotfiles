@@ -144,7 +144,7 @@ is_debian() {
 export -f is_debian
 
 is_rpi() {
-	if is_debian && [ "$(arch)" == "aarch64" ]; then
+	if is_debian && [ "$(uname -m)" == "aarch64" ]; then
 		return 0
 	else
 		return 1
@@ -157,9 +157,6 @@ reload() {
 }
 
 set_path() {
-	# Check if user id is 1000 or higher
-	[ "$(id -u)" -ge 1000 ] || return
-
 	for i in "$@"; do
 		# Check if the directory exists
 		[ -d "$i" ] || continue

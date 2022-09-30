@@ -6,8 +6,6 @@ export DOTDOTFILES=$HOME/.dotfiles
 export DOTFILES_TMP=$DOTDOTFILES/tmp
 export DOTFILES_BACKUP=$DOTDOTFILES/backup
 
-export USER_CONFIG=$HOME/.config
-
 export PC_DOTLETS=(
 	'package_manager'
 	'arch'
@@ -19,7 +17,7 @@ export PC_DOTLETS=(
 	'js'
 	'lib'
 	'ssh'
-	'xdg_user_dirs'
+	'xdg'
 	'zoxide'
 	'broot'
 	'chromium'
@@ -29,6 +27,7 @@ export PC_DOTLETS=(
 	'python'
 	'vscode'
 	'xfce4'
+	'rust'
 )
 
 export RPI_DOTLETS=(
@@ -37,9 +36,8 @@ export RPI_DOTLETS=(
 	'dotfiles'
 	'bash'
 	'lib'
-	'js'
-	'python'
-	'xdg_user_dirs'
+	'xdg'
+	'rust'
 )
 
 export USER_BIN="$HOME/.local/bin"

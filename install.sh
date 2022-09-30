@@ -24,7 +24,7 @@ create_dotfiles_dirs() {
 
 load_dotfiles() {
 	create_dotfiles_dirs
-	cd "$DOTFILES" || exit
+	cd "$DOTFILES"
 
 	if [ "$(ls "$DOTFILES")" ]; then
 		echo "$DOTFILES is not empty. It won't load dotfiles."
@@ -34,9 +34,11 @@ load_dotfiles() {
 	echo "Dofiles is loading..."
 	curl $DOTFILES_ZIP --output "$DOTFILES_TMP/dotfiles-main.zip"
 	unzip "$DOTFILES_TMP/dotfiles-main.zip" -d "$DOTFILES_TMP"
-	rm "$DOTFILES_TMP"/dotfiles-main.zip
+	rm -v "$DOTFILES_TMP"/dotfiles-main.zip
 	cd "$DOTFILES_TMP"/dotfiles-main
-	cp -r . "$DOTFILES"
+	cp -rv . "$DOTFILES"
+	cd "$DOTFILES"
+	rm -rfv "$DOTFILES_TMP"/dotfiles-main
 }
 
 source_lib() {
@@ -62,7 +64,11 @@ install_system_packages() {
 }
 
 install_dotfiles_packages() {
-	log "Installing local packages..."
+	if is_rpi; then
+		return
+	fi
+
+	log "Installing dotfiles packages..."
 
 	gotodot
 	pyenv install $PYTHON_VER
@@ -77,9 +83,9 @@ link_dotfiles() {
 	dot install
 }
 
-clean_env() {
-	echo "Cleaning environment..."
-	unset -v REPO
+clean_up() {
+	echo "Cleaning up..."
+	unset -v DOTFILES_ZIP
 	unset -v PYTHON_VER
 	unset -f create_dotfiles_dirs
 	unset -f load_dotfiles
@@ -99,7 +105,7 @@ install_dotfiles() {
 	install_system_packages
 	install_dotfiles_packages
 	link_dotfiles
-	clean_env
+	clean_up
 	echo "Dotfiles installed!"
 }
 

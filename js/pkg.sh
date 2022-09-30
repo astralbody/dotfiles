@@ -29,3 +29,7 @@ js_install() {
 		volta_install
 	fi
 }
+
+js_update() {
+	volta_update
+}

@@ -11,4 +11,8 @@ volta_completion() {
 	. "$DOTFILES_TMP/volta_completion.sh"
 }
 
-volta_completion
+js_launcher() {
+	volta_completion
+}
+
+js_launcher

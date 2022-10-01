@@ -3,6 +3,7 @@ elementary-planner
 git-completion
 gnome-shell-pomodoro
 gotop-bin
+oh-my-posh-bin
 postman-bin
 rpi-imager
 skypeforlinux-stable-bin

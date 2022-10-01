@@ -83,11 +83,11 @@ python-setuptools
 ripgrep
 ristretto
 rsync
-rustup
 sd
 seahorse
 shellcheck
 shfmt
+sshpass
 sudo
 tealdeer
 telegram-desktop
@@ -104,9 +104,11 @@ transmission-gtk
 ttc-iosevka
 ttf-fira-code
 ttf-fira-mono
+ttf-iosevka-nerd
 ttf-joypixels
 tumbler
 udiskie
+unrar
 unzip
 usbutils
 wget

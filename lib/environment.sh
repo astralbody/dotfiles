@@ -28,6 +28,7 @@ export PC_DOTLETS=(
 	'vscode'
 	'xfce4'
 	'rust'
+	'posh'
 )
 
 export RPI_DOTLETS=(

@@ -14,7 +14,7 @@
 	"editor.fontFamily": "'Fira Code', Consolas",
 	"editor.fontSize": 17,
 	"editor.fontLigatures": true,
-	"terminal.integrated.fontFamily": "'Fira Code', Consolas",
+	"terminal.integrated.fontFamily": "'Iosevka Nerd Font Mono', 'Fira Code', Consolas",
 	"terminal.integrated.fontSize": 16,
 	"explorer.confirmDelete": false,
 	"typescript.updateImportsOnFileMove.enabled": "always",

@@ -170,7 +170,24 @@ set_path() {
 }
 export -f set_path
 
-set_paths() {
+set_user_paths() {
+	local USER_PATHS=("$BIN_HOME")
 	set_path "${USER_PATHS[@]}"
 }
-export -f set_paths
+export -f set_user_paths
+
+create_xdg_base_dirs() {
+	local xdg_base_dirs=(
+		"$XDG_CONFIG_HOME"
+		"$XDG_CACHE_HOME"
+		"$XDG_DATA_HOME"
+		"$XDG_STATE_HOME"
+		"$BIN_HOME"
+	)
+	local base_dir
+
+	for base_dir in "${xdg_base_dirs[@]}"; do
+		mkdir -pv "${base_dir}"
+	done
+}
+export -f create_xdg_base_dirs

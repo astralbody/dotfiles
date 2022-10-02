@@ -50,6 +50,6 @@ upgrade_command_not_found() {
 }
 
 source_lib
-set_paths
+set_user_paths
 source_launchers
 upgrade_command_not_found

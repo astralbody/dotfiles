@@ -49,10 +49,9 @@ source_lib() {
 	done
 }
 
-install_paths() {
-	log "Installing paths..."
-	mkdir -p "$USER_BIN"
-	set_paths
+install_user_paths() {
+	log "Installing user paths..."
+	set_user_paths
 }
 
 install_system_packages() {
@@ -90,6 +89,7 @@ clean_up() {
 	unset -f create_dotfiles_dirs
 	unset -f load_dotfiles
 	unset -f source_lib
+	unset -f install_user_paths
 	unset -f install_system_packages
 	unset -f install_dotfiles_packages
 	unset -f link_dotfiles
@@ -101,7 +101,8 @@ install_dotfiles() {
 	echo "Dotfiles is installing..."
 	load_dotfiles
 	source_lib
-	install_paths
+	create_xdg_base_dirs
+	install_user_paths
 	install_system_packages
 	install_dotfiles_packages
 	link_dotfiles

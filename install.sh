@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-export DOTFILES_ZIP="https://codeload.github.com/astralbody/dotfiles/zip/refs/heads/main"
-export PYTHON_VER="3.10.6"
-
 export DOTDOTFILES=$HOME/.dotfiles
 export DOTFILES=$DOTDOTFILES/dotfiles
 export DOTFILES_TMP=$DOTDOTFILES/tmp
@@ -23,6 +20,7 @@ create_dotfiles_dirs() {
 }
 
 load_dotfiles() {
+	local dotfiles_zip="https://codeload.github.com/astralbody/dotfiles/zip/refs/heads/main"
 	create_dotfiles_dirs
 	cd "$DOTFILES"
 
@@ -32,7 +30,7 @@ load_dotfiles() {
 	fi
 
 	echo "Dofiles is loading..."
-	curl $DOTFILES_ZIP --output "$DOTFILES_TMP/dotfiles-main.zip"
+	curl "$dotfiles_zip" --output "$DOTFILES_TMP/dotfiles-main.zip"
 	unzip "$DOTFILES_TMP/dotfiles-main.zip" -d "$DOTFILES_TMP"
 	rm -v "$DOTFILES_TMP"/dotfiles-main.zip
 	cd "$DOTFILES_TMP"/dotfiles-main
@@ -63,6 +61,8 @@ install_system_packages() {
 }
 
 install_dotfiles_packages() {
+	local python_ver="3.10.6"
+
 	if is_rpi; then
 		return
 	fi
@@ -70,8 +70,8 @@ install_dotfiles_packages() {
 	log "Installing dotfiles packages..."
 
 	gotodot
-	pyenv install $PYTHON_VER
-	pyenv local $PYTHON_VER
+	pyenv install "$python_ver"
+	pyenv local "$python_ver"
 	pipenv install
 	npm install
 }
@@ -84,8 +84,6 @@ link_dotfiles() {
 
 clean_up() {
 	echo "Cleaning up..."
-	unset -v DOTFILES_ZIP
-	unset -v PYTHON_VER
 	unset -f create_dotfiles_dirs
 	unset -f load_dotfiles
 	unset -f source_lib

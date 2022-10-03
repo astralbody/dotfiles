@@ -19,7 +19,7 @@ xdg_install() {
 	gotodot
 
 	sudo rm /etc/xdg/user-dirs.defaults
-	sudo cp ./xdg/user-dirs.defaults /etc/xdg/
+	sudo cp ./xdg/user-dirs.defaults "$XDG_CONFIG_DIRS"
 	xdg-user-dirs-update
 	move_dotfiles_to_projects
 }

@@ -191,3 +191,10 @@ create_xdg_base_dirs() {
 	done
 }
 export -f create_xdg_base_dirs
+
+convert_webp_to_gif() {
+	local input=$1
+	local output=$2
+	local codec=${3-"libwebp"}
+	ffmpeg -i "$input" -vcodec "$codec" -loop 0 "$output"
+}

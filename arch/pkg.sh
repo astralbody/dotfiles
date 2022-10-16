@@ -8,7 +8,7 @@ pacman_install() {
 
 pacman_update() {
 	log "Pacman is updating packages"
-	sudo pacman --sync --refresh --sysupgrade
+	sudo pacman --sync --refresh --sysupgrade --noconfirm
 }
 
 pacman_refresh() {

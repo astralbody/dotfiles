@@ -3,3 +3,4 @@ sandbox
 vendor
 node_modules
 .env
+dot

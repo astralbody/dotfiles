@@ -199,3 +199,12 @@ convert_webp_to_gif() {
 	local codec=${3-"libwebp"}
 	ffmpeg -i "$input" -vcodec "$codec" -loop 0 "$output"
 }
+
+finish_feature() {
+	local feature_branch
+	feature_branch=$(git branch | rg '\*' | choose 1)
+
+	git checkout master
+	git pull origin master
+	git branch -D "$feature_branch"
+}

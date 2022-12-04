@@ -44,6 +44,10 @@ pub struct ConfigV2 {
     // profiles: Vec<Profile>,
     dotlets: Vec<DotletV2>,
 }
+struct StateV2 {
+    linked_configs: Vec<String>,
+    backup_configs: Vec<String>,
+}
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Config {
@@ -171,9 +175,11 @@ fn extract_configs(dotlet_path: &str, dotfiles_dir: &str) -> Vec<String> {
         })
 }
 
-fn link_configs_to_home(config: &ConfigV2) -> Result<(Vec<String>, Vec<String>), io::Error> {
-    let mut linked_configs = vec![];
-    let mut backups = vec![];
+fn link_configs_to_home(config: &ConfigV2) -> Result<StateV2, io::Error> {
+    let mut state = StateV2 {
+        linked_configs: vec![],
+        backup_configs: vec![]
+    };
     config.dotlets.iter().fold(vec![],|mut acc, dotlet| {
         dotlet.configs.iter().for_each(|dotlet_config| {
             let link = format!("{}/{}", &config.home_dir, &dotlet_config.to);
@@ -183,7 +189,7 @@ fn link_configs_to_home(config: &ConfigV2) -> Result<(Vec<String>, Vec<String>),
             if let Ok(_) = fs::metadata(&link) {
                 fs::create_dir_all(Path::new(&backup).parent().unwrap()).unwrap();
                 fs::rename(&link, &backup).unwrap();
-                backups.push(backup);
+                state.backup_configs.push(backup);
             };
 
             fs::create_dir_all(Path::new(&link).parent().unwrap()).unwrap();
@@ -191,12 +197,12 @@ fn link_configs_to_home(config: &ConfigV2) -> Result<(Vec<String>, Vec<String>),
             println!("Link {} to {}", &origin, &link);
             let result = unix::fs::symlink(origin, &link);
             acc.push(result);
-            linked_configs.push(link);
+            state.linked_configs.push(link);
         });
         acc
     });
 
-    Ok((linked_configs, backups))
+    Ok(state)
 }
 
 fn find_configs(dotlets: Vec<Dotlet>) -> Vec<Dotlet> {
@@ -225,14 +231,19 @@ fn remove_old_links(state_file: &str) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub fn install(config: Config) -> Result<(), Box<dyn Error>>  {
+fn save() -> {
+    let state_string = toml::to_string()?;
+    fs::write(&self.config.state_file, state_string)?;
+}
+
+pub fn install(config: ConfigV2) -> Result<(), Box<dyn Error>>  {
     // let dotlets = create_dotlets(&config)?;
     // let dotlets = find_configs(dotlets);
 
     remove_old_links(&config.state_file)?;
 
-    //let state = link_configs_to_home(dotlets, &config.home_dir, &config.backup_dir)?;
-//
+    let state = link_configs_to_home(&config)?;
+
     //let state = State {
     //    linked_configs,
     //    backups,
@@ -240,7 +251,8 @@ pub fn install(config: Config) -> Result<(), Box<dyn Error>>  {
     //};
     //state.save()?;
 
-    // save_state(&state)?;
+    save(state);
+    save(config);
 
     Ok(())
 }
@@ -272,8 +284,6 @@ impl State {
 #[cfg(test)]
 mod test {
 
-    use std::fmt::format;
-
     use super::*;
 
     fn create_test_home_dir(test_dir: &str) -> String {
@@ -288,6 +298,7 @@ mod test {
         return test_home_dir;
     }
 
+    #[ignore]
     #[test]
     fn dotlets() {
         let test_home_dir = create_test_home_dir("dotlets");
@@ -363,8 +374,8 @@ mod test {
     }
 
     #[test]
-    fn linking_dotfiles_configs() {
-        let test_home_dir = create_test_home_dir("linking_dotfiles_configs");
+    fn link_dotlet_configs() {
+        let test_home_dir = create_test_home_dir("link_dotlet_configs");
         let dotfiles_dir = "/shared_disk/projects/dotfiles/dot/fixtures/dotfiles";
         let backup_dir = format!("{}/.local/share/backup", test_home_dir);
         let state_file = format!("{}/.local/state", test_home_dir);
@@ -432,17 +443,32 @@ mod test {
     }
 
     #[test]
-    fn config_dirs() {
-        let test_home_dir = create_test_home_dir("config_dirs");
-        let backup_dir = format!("{}/.local/share/backup", test_home_dir);
+    fn create_config_dirs() {
+        let test_home_dir = create_test_home_dir("create_config_dirs");
         let dotfiles_dir = "/shared_disk/projects/dotfiles/dot/fixtures/dotfiles";
+        let backup_dir = format!("{}/.local/share/backup", test_home_dir);
+        let state_file = format!("{}/.local/state", test_home_dir);
+        let dotlets = vec![
+            DotletV2 {
+                name: "dotlet_c".to_string(),
+                path: "dotlet_c".to_string(),
+                configs: vec![
+                    DotletConfig {
+                        from: ".config_dir/config_dir/.config_file".to_string(),
+                        to: ".config_dir/config_dir/.config_file".to_string(),
+                    },
+                ]
+            }
+        ];
+        let config = ConfigV2 {
+            home_dir: test_home_dir.clone(),
+            dotfiles_dir: dotfiles_dir.to_string(),
+            backup_dir,
+            state_file,
+            dotlets
+        };
 
-        let dotlets = vec![Dotlet {
-            path: format!("{}/dotlet_c", dotfiles_dir),
-            configs: vec![".config_dir/.config_file".to_string(), ".config_dir/config_dir/.config_file".to_string()]
-        }];
-
-        // link_configs_to_home(dotlets, &test_home_dir, &backup_dir).unwrap();
+        link_configs_to_home(&config).unwrap();
 
         assert!(match fs::symlink_metadata(format!("{}/.config_dir/config_dir/", test_home_dir)) {
             Ok(metadata) => metadata.file_type().is_dir(),
@@ -451,35 +477,39 @@ mod test {
     }
 
     #[test]
-    fn backup_origin_configs() {
-        let test_home_dir = create_test_home_dir("backup_origin_configs");
+    fn backup_existing_configs() {
+        let test_home_dir = create_test_home_dir("backup_existing_configs");
         let backup_dir = format!("{}/.local/share/backup", test_home_dir);
         let dotfiles_dir = "/shared_disk/projects/dotfiles/dot/fixtures/dotfiles";
-
-        fs::create_dir(format!("{}/.config_dir", test_home_dir)).unwrap();
-        fs::File::create(format!("{}/.config_dir/.config_file", test_home_dir)).unwrap();
-        let dotlets: Vec<Dotlet> = vec![
-            Dotlet {
-                path: format!("{}/dotlet_a", dotfiles_dir),
-                configs: vec![]
-            },
-            Dotlet {
-                path: format!("{}/dotlet_b", dotfiles_dir),
-                configs: vec![".config_file".to_string()]
-            },
-            Dotlet {
-                path: format!("{}/dotlet_c", dotfiles_dir),
-                configs: vec![".config_dir/.config_file".to_string(), ".config_dir/config_dir/.config_file".to_string()]
-            },
-        ];
+        let state_file = format!("{}/.local/state", test_home_dir);
 
         fs::create_dir_all(&backup_dir).unwrap();
+        fs::create_dir(format!("{}/.config_dir", test_home_dir)).unwrap();
+        fs::File::create(format!("{}/.config_dir/.config_file", test_home_dir)).unwrap();
 
-        // link_configs_to_home(dotlets, &test_home_dir, &backup_dir).unwrap();
+        let dotlets = vec![
+            DotletV2 {
+                name: "dotlet_c".to_string(),
+                path: "dotlet_c".to_string(),
+                configs: vec![
+                    DotletConfig {
+                        from: ".config_dir/.config_file".to_string(),
+                        to: ".config_dir/.config_file".to_string(),
+                    },
+                ]
+            }
+        ];
+        let config = ConfigV2 {
+            home_dir: test_home_dir.clone(),
+            dotfiles_dir: dotfiles_dir.to_string(),
+            backup_dir,
+            state_file,
+            dotlets
+        };
 
-        let metadata = fs::metadata(format!("{}/.config_dir/.config_file", backup_dir)).expect("Cannot read origin file!");
+        link_configs_to_home(&config).unwrap();
 
-        assert!(metadata.is_file());
+        assert!(fs::metadata(format!("{}/.config_dir/.config_file", &config.backup_dir)).unwrap().is_file());
     }
 
     #[test]

@@ -3,3 +3,4 @@ package-lock.json
 Pipfile.lock
 *.md
 dot
+archiso

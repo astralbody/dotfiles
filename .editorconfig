@@ -14,6 +14,9 @@ shell_variant = bash
 [*.py]
 indent_style = space
 
+[*.rs]
+indent_style = space
+
 [bash/**]
 ignore = false
 

@@ -12,7 +12,7 @@ use std::env;
 // [x] - Integration tests
 // [x] - Save state
 // [x] - Remove previous links before installing new ones
-// [ ] - Add support dotlets
+// [x] - Add support dotlets
 // [ ] - Add support profiles and profile_name, link selected dotlets
 // [ ] - Handle arguments (https://docs.rs/clap/latest/clap/)
 // [ ] - Handle environment variables
@@ -20,10 +20,10 @@ use std::env;
 // [ ] - Handle errors
 // [ ] - Write docs
 
-//struct Profile {
-//   name: String,
-//   dotlets: Vec<String>
-//}
+struct Profile {
+   name: String,
+   dotlets: Vec<String>
+}
 
 pub struct DotletConfig {
    pub from: String,
@@ -37,12 +37,12 @@ pub struct Dotlet {
 }
 
 pub struct Config {
-    // profile_name: String,
+    pub profile_name: String,
     pub dotfiles_dir: String,
     pub home_dir: String,
     pub backup_dir: String,
     pub state_file: String,
-    // profiles: Vec<Profile>,
+    pub profiles: Vec<Profile>,
     pub dotlets: Vec<Dotlet>,
 }
 
@@ -146,12 +146,16 @@ pub fn create_test_config(user_dir: &str) -> Config {
         dotfiles_dir,
         backup_dir,
         state_file,
-        dotlets: vec![]
+        dotlets: vec![],
+        profiles: vec![],
+        profile_name: "".to_string()
     }
 }
 
 #[cfg(test)]
 mod test {
+    use std::fmt::format;
+
     use super::*;
 
     #[test]
@@ -314,5 +318,48 @@ mod test {
 
             assert!(config_exists.is_ok() && !config_exists.unwrap());
         });
+    }
+
+    #[test]
+    fn install_dotlets_in_profile() {
+        let mut config = create_test_config("install_dotlets_in_profile");
+        let mut dotlets = vec![
+            Dotlet {
+                name: "dotlet_b".to_string(),
+                path: "dotlet_b".to_string(),
+                configs: vec![
+                    DotletConfig {
+                        from: ".config_file".to_string(),
+                        to: ".config_file".to_string(),
+                    }
+                ]
+            },
+            Dotlet {
+                name: "dotlet_c".to_string(),
+                path: "dotlet_c".to_string(),
+                configs: vec![
+                    DotletConfig {
+                        from: ".config_dir/config_dir/.config_file".to_string(),
+                        to: ".config_dir/config_dir/.config_file".to_string(),
+                    },
+                    DotletConfig {
+                        from: ".config_dir/.config_file".to_string(),
+                        to: ".config_dir/.config_file".to_string(),
+                    }
+                ]
+            }
+        ];
+        config.dotlets.append(&mut dotlets);
+        config.profiles.push(Profile { name: "venus".to_string(), dotlets: vec!["dotlet_b".to_string()] });
+        config.profile_name = "venus".to_string();
+
+        link_configs_to_home(&config).unwrap();
+
+        let config_exists = Path::new(&format!("{}/{}", &config.home_dir, ".config_file".to_string())).try_exists().unwrap();
+        assert!(config_exists);
+        let config_exists = Path::new(&format!("{}/{}", &config.home_dir, ".config_dir/.config_file".to_string())).try_exists().unwrap();
+        assert!(!config_exists);
+        let config_exists = Path::new(&format!("{}/{}", &config.home_dir, ".config_dir/config_dir/.config_file".to_string())).try_exists().unwrap();
+        assert!(!config_exists);
     }
 }

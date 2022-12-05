@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::fs::{self};
 use std::os::unix;
-use std::path::{Path, PathBuf};
+use std::path::{Path};
 use std::io;
 use std::vec;
 use toml;
@@ -25,15 +25,15 @@ use std::env;
 //   dotlets: Vec<String>
 //}
 
-struct DotletConfig {
-   from: String,
-   to: String,
+pub struct DotletConfig {
+   pub from: String,
+   pub to: String,
 }
 
-pub struct DotletV2 {
+pub struct Dotlet {
    pub name: String,
    pub path: String,
-   configs: Vec<DotletConfig>
+   pub configs: Vec<DotletConfig>
 }
 
 pub struct Config {
@@ -43,7 +43,7 @@ pub struct Config {
     pub backup_dir: String,
     pub state_file: String,
     // profiles: Vec<Profile>,
-    pub dotlets: Vec<DotletV2>,
+    pub dotlets: Vec<Dotlet>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -138,6 +138,9 @@ pub fn create_test_config(user_dir: &str) -> Config {
     let backup_dir = format!("{}/.local/share/backup", home_dir);
     let state_file = format!("{}/.local/state", home_dir);
 
+    fs::create_dir_all(Path::new(&state_file).parent().unwrap()).unwrap();
+    fs::create_dir_all(&backup_dir).unwrap();
+
     return Config {
         home_dir,
         dotfiles_dir,
@@ -155,12 +158,12 @@ mod test {
     fn link_dotlet_configs() {
         let mut config = create_test_config("link_dotlet_configs");
         let mut dotlets = vec![
-            DotletV2 {
+            Dotlet {
                 name: "dotlet_a".to_string(),
                 path: "dotlet_a".to_string(),
                 configs: vec![]
             },
-            DotletV2 {
+            Dotlet {
                 name: "dotlet_b".to_string(),
                 path: "dotlet_b".to_string(),
                 configs: vec![
@@ -170,7 +173,7 @@ mod test {
                     }
                 ]
             },
-            DotletV2 {
+            Dotlet {
                 name: "dotlet_c".to_string(),
                 path: "dotlet_c".to_string(),
                 configs: vec![
@@ -215,7 +218,7 @@ mod test {
     #[test]
     fn create_config_dirs() {
         let mut config = create_test_config("create_config_dirs");
-        config.dotlets.push(DotletV2 {
+        config.dotlets.push(Dotlet {
             name: "dotlet_c".to_string(),
             path: "dotlet_c".to_string(),
             configs: vec![
@@ -237,7 +240,7 @@ mod test {
     #[test]
     fn backup_existing_configs() {
         let mut config = create_test_config("backup_existing_configs");
-        config.dotlets.push(DotletV2 {
+        config.dotlets.push(Dotlet {
             name: "dotlet_c".to_string(),
             path: "dotlet_c".to_string(),
             configs: vec![
@@ -260,9 +263,10 @@ mod test {
     fn save_state() {
         let config = create_test_config("save_state");
         let state = State {
-            linked_configs: vec![".config_file".to_string()],
-            backup_configs: vec![".config_file".to_string()],
+            linked_configs: vec![format!("{}/.config_file", &config.home_dir)],
+            backup_configs: vec![format!("{}/.config_file", &config.home_dir)],
         };
+        fs::create_dir_all(Path::new(&config.state_file).parent().unwrap()).unwrap();
 
         save(&config.state_file, &state).unwrap();
 
@@ -273,11 +277,10 @@ mod test {
     fn restore_state() {
         let config = create_test_config("restore_state");
         let state = State {
-            linked_configs: vec![
-                format!("{}/.config_file", config.home_dir),
-            ],
-            backup_configs: vec![".config_file".to_string() ],
+            linked_configs: vec![format!("{}/.config_file", &config.home_dir)],
+            backup_configs: vec![format!("{}/.config_file", &config.home_dir)],
         };
+        fs::create_dir_all(Path::new(&config.state_file).parent().unwrap()).unwrap();
         save(&config.state_file, &state).unwrap();
 
         let restored_state = restore(&config.state_file).unwrap();
@@ -289,7 +292,7 @@ mod test {
     #[test]
     fn removing_old_links() {
         let mut config = create_test_config("removing_old_links");
-        config.dotlets.push(DotletV2 {
+        config.dotlets.push(Dotlet {
             name: "dotlet_c".to_string(),
             path: "dotlet_c".to_string(),
             configs: vec![
@@ -300,13 +303,16 @@ mod test {
             ]
         });
         let state = link_configs_to_home(&config).unwrap();
+        fs::create_dir_all(Path::new(&config.state_file).parent().unwrap()).unwrap();
         save(&config.state_file, &state).unwrap();
 
         remove_old_links(&config.state_file).unwrap();
 
         state.linked_configs.iter().for_each(|linked_config: &String| {
             let config_path = format!("{}/{}", &config.home_dir, &linked_config);
-            assert!(Path::new(&config_path).try_exists().is_err());
+            let config_exists = Path::new(&config_path).try_exists();
+
+            assert!(config_exists.is_ok() && !config_exists.unwrap());
         });
     }
 }

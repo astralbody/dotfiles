@@ -117,29 +117,30 @@ get_os_release_id() {
 }
 export -f get_os_release_id
 
-is_arch() {
-	local arch_id="arch"
+is_os_release_id() {
+	local id="$1"
 	local os_release_id
 	os_release_id=$(get_os_release_id)
 
-	if [ "$os_release_id" = "$arch_id" ]; then
+	if [ "$os_release_id" = "$id" ]; then
 		return 0
 	else
 		return 1
 	fi
 }
+
+is_arch() {
+	return $(is_os_release_id "arch")
+}
 export -f is_arch
 
-is_debian() {
-	local debian_id="debian"
-	local os_release_id
-	os_release_id=$(get_os_release_id)
+is_ubuntu() {
+	return $(is_os_release_id "ubuntu")
+}
+export -f is_ubuntu
 
-	if [ "$os_release_id" = "$debian_id" ]; then
-		return 0
-	else
-		return 1
-	fi
+is_debian() {
+	return $(is_os_release_id "debian")
 }
 export -f is_debian
 

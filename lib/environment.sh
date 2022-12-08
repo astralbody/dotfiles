@@ -41,6 +41,14 @@ export RPI_DOTLETS=(
 	'rust'
 )
 
+export UBUNTU_DOTLETS=(
+	'dotfiles'
+	'bash'
+	'kitty'
+	'vscode'
+	'mcfly'
+)
+
 # XDG Base Directory
 # https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 

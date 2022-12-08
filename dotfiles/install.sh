@@ -90,7 +90,9 @@ link() {
 	remove_created_dirs
 
 	touch "$DOTFILES_TMP"/linked_configs.txt
-	if is_rpi; then
+	if is_ubuntu; then
+		make_links "${UBUNTU_DOTLETS[@]}"
+	elif is_rpi; then
 		make_links "${RPI_DOTLETS[@]}"
 	else
 		make_links "${PC_DOTLETS[@]}"

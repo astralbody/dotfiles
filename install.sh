@@ -63,7 +63,7 @@ install_system_packages() {
 install_dotfiles_packages() {
 	local python_ver="3.10.6"
 
-	if is_rpi; then
+	if is_rpi || is_ubuntu; then
 		return
 	fi
 

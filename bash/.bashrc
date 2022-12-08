@@ -35,7 +35,9 @@ source_droplet_launchers() {
 }
 
 source_launchers() {
-	if is_rpi; then
+	if is_ubuntu; then
+		source_droplet_launchers "${UBUNTU_DOTLETS[@]}"
+	elif is_rpi; then
 		source_droplet_launchers "${RPI_DOTLETS[@]}"
 	else
 		source_droplet_launchers "${PC_DOTLETS[@]}"

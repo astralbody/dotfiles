@@ -4,9 +4,8 @@ use std::os::unix;
 use std::path::{Path};
 use std::io;
 use std::vec;
-use toml;
-use serde_derive::{Deserialize,Serialize};
 use std::env;
+use serde::{Deserialize, Serialize};
 
 // TODO:
 // [x] - Integration tests
@@ -20,9 +19,9 @@ use std::env;
 // [ ] - Handle errors
 // [ ] - Write docs
 
-struct Profile {
-   name: String,
-   dotlets: Vec<String>
+pub struct Profile {
+   pub name: String,
+   pub dotlets: Vec<String>
 }
 
 pub struct DotletConfig {
@@ -100,14 +99,14 @@ fn remove_old_links(state_file: &str) -> Result<(), Box<dyn Error>> {
 }
 
 fn save(file: &str, state: &State) -> Result<(), Box<dyn Error>>  {
-    let string = toml::to_string(&state)?;
+    let string = ron::to_string(&state)?;
     fs::write(file, string)?;
     Ok(())
 }
 
 fn restore(file: &str) -> Result<State, Box<dyn Error>> {
     let file = fs::read_to_string(&file)?;
-    let restored_state: State = toml::from_str(&file)?;
+    let restored_state: State = ron::from_str(&file)?;
     Ok(restored_state)
 }
 
@@ -136,7 +135,7 @@ pub fn create_test_config(user_dir: &str) -> Config {
     let tmp_dir = format!("{}/tmp", current_dir);
     let home_dir = create_test_home_dir(&tmp_dir, user_dir);
     let backup_dir = format!("{}/.local/share/backup", home_dir);
-    let state_file = format!("{}/.local/state", home_dir);
+    let state_file = format!("{}/.local/state.ron", home_dir);
 
     fs::create_dir_all(Path::new(&state_file).parent().unwrap()).unwrap();
     fs::create_dir_all(&backup_dir).unwrap();
@@ -154,8 +153,6 @@ pub fn create_test_config(user_dir: &str) -> Config {
 
 #[cfg(test)]
 mod test {
-    use std::fmt::format;
-
     use super::*;
 
     #[test]

@@ -20,22 +20,26 @@ use std::vec;
 // [ ] - Handle errors
 // [ ] - Write docs
 
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Profile {
     pub name: String,
     pub dotlets: Vec<String>,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
 pub struct DotletConfig {
     pub from: String,
     pub to: String,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Dotlet {
     pub name: String,
     pub path: String,
     pub configs: Vec<DotletConfig>,
 }
 
+#[derive(Debug)]
 pub struct Config {
     pub profile_name: String,
     pub dotfiles_dir: String,

@@ -1,0 +1,34 @@
+(
+	profiles: [
+		(
+			name: "venus",
+			dotlets: ["dotlet_b"]
+		)
+	],
+	dotlets: [
+		(
+			name: "dotlet_b",
+			path: "dotlet_b",
+			configs: [
+				(
+					from: ".config_file",
+					to: ".config_file"
+				)
+			]
+		),
+		(
+			name: "dotlet_c",
+			path: "dotlet_c",
+			configs: [
+				(
+					from: ".config_dir/config_dir/.config_file",
+					to: ".config_dir/config_dir/.config_file"
+				),
+				(
+					from: ".config_dir/.config_file",
+					to: ".config_dir/.config_file"
+				)
+			]
+		)
+	],
+)

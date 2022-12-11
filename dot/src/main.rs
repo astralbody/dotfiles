@@ -1,4 +1,5 @@
-use std::process;
+use clap::{Parser, Arg};
+use dot::Config;
 /* use dot::{Config,get_dotlets}; */
 
 // Algorithm:
@@ -15,7 +16,41 @@ use std::process;
 // - [ ] add unit and integration tests
 // - [ ] error handling
 
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    #[arg(short, long)]
+    dotfiles: String,
+
+    #[arg(short = 'm', long)]
+    home: String,
+
+    #[arg(short, long)]
+    profile: String,
+
+    #[arg(short, long)]
+    config: String,
+
+    #[arg(short, long)]
+    backup: Option<String>,
+
+    #[arg(short, long)]
+    state: Option<String>,
+}
+
+fn build_config(args: Args) -> Config {
+    let backup_dir = args.backup.or(Some(format!("{}/.local/share/backup", args.home))).unwrap();
+    let state_file = args.state.or(Some(format!("{}/.local/share/backup", args.home))).unwrap()
+
+    Config {
+        backup_dir,
+        state_file,
+    }
+}
+
 fn main() {
+    let args = Args::parse();
+    println!("{:?}", args);
     /* let config = Config::build("../", "").unwrap_or_else(|err| {
         println!("Problem parsing arguments: {err}");
         process::exit(1);

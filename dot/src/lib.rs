@@ -16,6 +16,7 @@ use std::vec;
 // [ ] - Handle arguments (https://docs.rs/clap/latest/clap/)
 // [ ] - Handle environment variables
 // [ ] - Handle config files
+// [ ] - Validation
 // [ ] - Handle errors
 // [ ] - Write docs
 

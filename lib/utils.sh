@@ -130,17 +130,17 @@ is_os_release_id() {
 }
 
 is_arch() {
-	return "$(is_os_release_id "arch")"
+	return $(is_os_release_id "arch")
 }
 export -f is_arch
 
 is_ubuntu() {
-	return "$(is_os_release_id "ubuntu")"
+	return $(is_os_release_id "ubuntu")
 }
 export -f is_ubuntu
 
 is_debian() {
-	return "$(is_os_release_id "debian")"
+	return $(is_os_release_id "debian")
 }
 export -f is_debian
 

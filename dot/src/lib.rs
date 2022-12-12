@@ -117,19 +117,28 @@ fn link_configs_to_home(config: &Config) -> Result<State, io::Error> {
     Ok(state)
 }
 
-fn remove_links(links: &Vec<String>) -> Result<(), io::Error> {
+fn remove_links(links: &Vec<String>) {
     links.iter().for_each(|link| {
-        fs::remove_file(&link);
+        let result = fs::remove_file(&link);
+
+        if let Err(err) = result {
+            eprintln!("Failed to remove {}: {}", link, err);
+        }
     });
-    Ok(())
 }
 
 fn remove_old_links(state_file: &str) -> Result<(), Box<dyn Error>> {
     let state_file_exists = Path::new(&state_file).try_exists();
 
     if state_file_exists.is_ok() && state_file_exists.unwrap() {
-        let old_state = restore(&state_file)?;
-        remove_links(&old_state.linked_configs)?;
+        let old_state = restore(&state_file);
+
+        match old_state {
+            Ok(state) => remove_links(&state.linked_configs),
+            Err(err) => {
+                eprintln!("Failed to read the state file {}: {}", &state_file, err);
+            }
+        }
     }
 
     Ok(())

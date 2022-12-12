@@ -6,7 +6,9 @@
 	],
 	"settings": {
 		"cSpell.words": [
-			"dotfiles"
+			"dotfiles",
+			"dotlets",
+			"dotlet"
 		]
 	}
 }

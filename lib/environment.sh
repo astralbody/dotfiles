@@ -47,6 +47,8 @@ export UBUNTU_DOTLETS=(
 	'kitty'
 	'vscode'
 	'mcfly'
+	'package_manager'
+	'rust'
 )
 
 # XDG Base Directory

@@ -97,12 +97,18 @@ fn link_configs_to_home(config: &Config) -> Result<State, io::Error> {
                     "{}/{}/{}",
                     &config.dotfiles_dir, &dotlet.path, &dotlet_config.from
                 );
-                let backup = format!("{}/{}", &config.backup_dir, &dotlet_config.to);
 
-                if let Ok(_) = fs::metadata(&link) {
-                    fs::create_dir_all(Path::new(&backup).parent().unwrap()).unwrap();
-                    fs::rename(&link, &backup).unwrap();
-                    state.backup_configs.push(backup);
+                if let Ok(_) =  fs::metadata(&link) {
+                    let backup = format!("{}/{}", &config.backup_dir, &dotlet_config.to);
+
+                    Path::new(&backup)
+                        .parent()
+                        .and_then(|path| fs::create_dir_all(&path).ok());
+
+                    match fs::rename(&link, &backup) {
+                        Ok(_) => state.backup_configs.push(backup),
+                        Err(_) => eprintln!("Failed to backup {}", backup)
+                    }
                 };
 
                 fs::create_dir_all(Path::new(&link).parent().unwrap()).unwrap();

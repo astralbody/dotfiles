@@ -1,148 +1,148 @@
 {
-  "files.trimFinalNewlines": true,
-  "files.insertFinalNewline": true,
-  "editor.insertSpaces": true,
-  "editor.renderWhitespace": "all",
-  "editor.suggestSelection": "first",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "editor.minimap.enabled": false,
-  "files.eol": "\n",
-  "code-eol.newlineCharacter": "¬",
-  "code-eol.returnCharacter": "¤",
-  "code-eol.crlfCharacter": "¤¬",
-  "workbench.iconTheme": "vs-minimal",
-  "editor.fontFamily": "'Fira Code', Consolas",
-  "editor.fontSize": 17,
-  "editor.fontLigatures": true,
-  "terminal.integrated.fontFamily": "'Iosevka Nerd Font Mono', 'Fira Code', Consolas",
-  "terminal.integrated.fontSize": 16,
-  "explorer.confirmDelete": false,
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "cSpell.userWords": [],
-  "explorer.confirmDragAndDrop": false,
-  // "files.autoSave": "afterDelay",
-  "gitlens.remotes": [
-    {
-      "domain": "captify",
-      "type": "Custom",
-      "name": "Captify",
-      "protocol": "https",
-      "urls": {
-        "repository": "https://github.com/${repo}",
-        "branches": "https://github.com/${repo}/branches",
-        "branch": "https://github.com/${repo}/commits/${branch}",
-        "commit": "https://github.com/${repo}/commit/${id}",
-        "file": "https://github.com/${repo}?path=${file}${line}",
-        "fileInBranch": "https://github.com/${repo}/blob/${branch}/${file}${line}",
-        "fileInCommit": "https://github.com/${repo}/blob/${id}/${file}${line}",
-        "fileLine": "#L${line}",
-        "fileRange": "#L${start}-L${end}"
-      }
-    }
-  ],
-  "gitlens.codeLens.enabled": false,
-  "git.autofetch": true,
-  "editor.bracketPairColorization.enabled": true,
-  "redhat.telemetry.enabled": false,
-  "javascript.validate.enable": false,
-  "workbench.editor.untitled.hint": "hidden",
-  "gitlens.advanced.messages": {
-    "suppressGitMissingWarning": true
-  },
-  "[python]": {
-    "editor.tabSize": 4,
-    "editor.formatOnPaste": false,
-    "editor.formatOnSaveMode": "file"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "files.trimTrailingWhitespace": true,
-  "files.associations": {
-    "*.py": "python",
-    ".gitconfig": "plaintext",
-    ".gitconfig_captify": "plaintext",
-    "gitconfig": "plaintext"
-  },
-  "python.formatting.provider": "black",
-  "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "modificationsIfAvailable",
-  //"editor.formatOnSaveMode": "file",
-  "markdown.experimental.validate.enabled": true,
-  "shellcheck.enable": true,
-  "shellcheck.enableQuickFix": true,
-  "shellcheck.run": "onSave",
-  "shellcheck.exclude": [],
-  "git.ignoreMissingGitWarning": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.fixAll.shellcheck": true
-  },
-  "typescript.suggest.paths": false,
-  "javascript.suggest.paths": false,
-  "shellformat.useEditorConfig": true,
-  "editor.stickyScroll.enabled": true,
-  "[dockerfile]": {
-    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-  },
-  "window.titleBarStyle": "custom",
-  "workbench.colorTheme": "Tokyo Night Storm",
-  "editor.tokenColorCustomizations": {
-    "[Catppuccin Frappé][Catppuccin Macchiato][Catppuccin Mocha]": {
-      "textMateRules": [
-        {
-          "scope": [
-            "entity.name.function",
-            "support.function",
-            "variable.parameter.function",
-            "variable.parameter.function-call",
-            "constant.language",
-            "entity.name.function.rust",
-            "keyword.control.rust",
-            "variable.language.rust",
-            "variable.other.rust",
-            "variable.other.lua",
-            "keyword.control.directive",
-            "keyword.other.using.directive",
-            "punctuation.definition.directive",
-            "entity.name.other.preprocessor.macro.predefined.probably",
-            "entity.name.scope-resolution.cpp",
-            "string.quoted.docstring.multi",
-            "string.quoted.multi",
-            "source.python string.quoted.docstring.multi.python punctuation.definition.string.begin.python",
-            "source.python string.quoted.docstring.multi.python punctuation.definition.string.end.python",
-            "source.python string.quoted.multi.python punctuation.definition.string.begin.python",
-            "source.python string.quoted.multi.python punctuation.definition.string.end.python",
-            "markup.fenced_code.block",
-            "meta.function-call.generic.python",
-            "entity.name.function",
-            "meta.require",
-            "support.function.any-method",
-            "variable.function",
-            "markup.italic",
-            "punctuation.definition.italic",
-            "todo.emphasis",
-            "comment",
-            "punctuation.definition.comment",
-            "comment.line.double-slash",
-            "comment.block.documentation",
-            "keyword.control.import.python",
-            "storage.type.function.python",
-            "markup.italic.markdown",
-            "entity.other.attribute-name.ts",
-            "entity.other.attribute-name.js",
-            "entity.other.attribute-name.jsx",
-            "entity.other.attribute-name.tsx",
-            "variable.parameter",
-            "variable.language.super"
-          ],
-          "settings": {
-            "fontStyle": ""
-          }
-        }
-      ]
-    }
-  },
-  "window.zoomLevel": 2
+	"files.trimFinalNewlines": true,
+	"files.insertFinalNewline": true,
+	"editor.insertSpaces": true,
+	"editor.renderWhitespace": "all",
+	"editor.suggestSelection": "first",
+	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+	"editor.minimap.enabled": false,
+	"files.eol": "\n",
+	"code-eol.newlineCharacter": "¬",
+	"code-eol.returnCharacter": "¤",
+	"code-eol.crlfCharacter": "¤¬",
+	"workbench.iconTheme": "vs-minimal",
+	"editor.fontFamily": "'Fira Code', Consolas",
+	"editor.fontSize": 17,
+	"editor.fontLigatures": true,
+	"terminal.integrated.fontFamily": "'Iosevka Nerd Font Mono', 'Fira Code', Consolas",
+	"terminal.integrated.fontSize": 16,
+	"explorer.confirmDelete": false,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"cSpell.userWords": [],
+	"explorer.confirmDragAndDrop": false,
+	// "files.autoSave": "afterDelay",
+	"gitlens.remotes": [
+		{
+			"domain": "captify",
+			"type": "Custom",
+			"name": "Captify",
+			"protocol": "https",
+			"urls": {
+				"repository": "https://github.com/${repo}",
+				"branches": "https://github.com/${repo}/branches",
+				"branch": "https://github.com/${repo}/commits/${branch}",
+				"commit": "https://github.com/${repo}/commit/${id}",
+				"file": "https://github.com/${repo}?path=${file}${line}",
+				"fileInBranch": "https://github.com/${repo}/blob/${branch}/${file}${line}",
+				"fileInCommit": "https://github.com/${repo}/blob/${id}/${file}${line}",
+				"fileLine": "#L${line}",
+				"fileRange": "#L${start}-L${end}"
+			}
+		}
+	],
+	"gitlens.codeLens.enabled": false,
+	"git.autofetch": true,
+	"editor.bracketPairColorization.enabled": true,
+	"redhat.telemetry.enabled": false,
+	"javascript.validate.enable": false,
+	"workbench.editor.untitled.hint": "hidden",
+	"gitlens.advanced.messages": {
+		"suppressGitMissingWarning": true
+	},
+	"[python]": {
+		"editor.tabSize": 4,
+		"editor.formatOnPaste": false,
+		"editor.formatOnSaveMode": "file"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"files.trimTrailingWhitespace": true,
+	"files.associations": {
+		"*.py": "python",
+		".gitconfig": "plaintext",
+		".gitconfig_captify": "plaintext",
+		"gitconfig": "plaintext"
+	},
+	"python.formatting.provider": "black",
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "modificationsIfAvailable",
+	//"editor.formatOnSaveMode": "file",
+	"markdown.experimental.validate.enabled": true,
+	"shellcheck.enable": true,
+	"shellcheck.enableQuickFix": true,
+	"shellcheck.run": "onSave",
+	"shellcheck.exclude": [],
+	"git.ignoreMissingGitWarning": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true,
+		"source.fixAll.shellcheck": true
+	},
+	"typescript.suggest.paths": false,
+	"javascript.suggest.paths": false,
+	"shellformat.useEditorConfig": true,
+	"editor.stickyScroll.enabled": true,
+	"[dockerfile]": {
+		"editor.defaultFormatter": "ms-azuretools.vscode-docker"
+	},
+	"window.titleBarStyle": "custom",
+	"workbench.colorTheme": "Tokyo Night Storm",
+	"editor.tokenColorCustomizations": {
+		"[Catppuccin Frappé][Catppuccin Macchiato][Catppuccin Mocha]": {
+			"textMateRules": [
+				{
+					"scope": [
+						"entity.name.function",
+						"support.function",
+						"variable.parameter.function",
+						"variable.parameter.function-call",
+						"constant.language",
+						"entity.name.function.rust",
+						"keyword.control.rust",
+						"variable.language.rust",
+						"variable.other.rust",
+						"variable.other.lua",
+						"keyword.control.directive",
+						"keyword.other.using.directive",
+						"punctuation.definition.directive",
+						"entity.name.other.preprocessor.macro.predefined.probably",
+						"entity.name.scope-resolution.cpp",
+						"string.quoted.docstring.multi",
+						"string.quoted.multi",
+						"source.python string.quoted.docstring.multi.python punctuation.definition.string.begin.python",
+						"source.python string.quoted.docstring.multi.python punctuation.definition.string.end.python",
+						"source.python string.quoted.multi.python punctuation.definition.string.begin.python",
+						"source.python string.quoted.multi.python punctuation.definition.string.end.python",
+						"markup.fenced_code.block",
+						"meta.function-call.generic.python",
+						"entity.name.function",
+						"meta.require",
+						"support.function.any-method",
+						"variable.function",
+						"markup.italic",
+						"punctuation.definition.italic",
+						"todo.emphasis",
+						"comment",
+						"punctuation.definition.comment",
+						"comment.line.double-slash",
+						"comment.block.documentation",
+						"keyword.control.import.python",
+						"storage.type.function.python",
+						"markup.italic.markdown",
+						"entity.other.attribute-name.ts",
+						"entity.other.attribute-name.js",
+						"entity.other.attribute-name.jsx",
+						"entity.other.attribute-name.tsx",
+						"variable.parameter",
+						"variable.language.super"
+					],
+					"settings": {
+						"fontStyle": ""
+					}
+				}
+			]
+		}
+	},
+	"window.zoomLevel": 1
 }

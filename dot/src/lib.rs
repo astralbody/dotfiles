@@ -2,9 +2,8 @@ use serde::{Deserialize, Serialize};
 use std::env;
 use std::error::Error;
 use std::fs::{self};
-use std::io;
 use std::os::unix;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::vec;
 
 // TODO:
@@ -13,11 +12,11 @@ use std::vec;
 // [x] - Remove previous links before installing new ones
 // [x] - Add support dotlets
 // [x] - Add support profiles and profile_name, link selected dotlets
+// [x] - Handle errors
 // [ ] - Handle arguments (https://docs.rs/clap/latest/clap/)
 // [ ] - Handle environment variables
 // [ ] - Handle config files
 // [ ] - Validation
-// [ ] - Handle errors
 // [ ] - Write docs
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -37,6 +36,17 @@ pub struct Dotlet {
     pub name: String,
     pub path: String,
     pub configs: Vec<DotletConfig>,
+}
+
+#[derive(Debug)]
+struct DotletV2 {
+    pub name: String
+}
+
+#[derive(Debug)]
+struct DotletConfigV2 {
+    link: PathBuf,
+    origin: PathBuf,
 }
 
 #[derive(Debug)]
@@ -82,7 +92,32 @@ fn filter_dotlets_by_profile(config: &Config) -> Vec<&Dotlet> {
     }
 }
 
-fn link_configs_to_home(config: &Config) -> Result<State, io::Error> {
+fn collect_configs(dotlet: &DotletV2, config: &Config) -> Result<Vec<DotletConfigV2>, std::io::Error> {
+    let configs_path = format!("{}/{}/config", &config.dotfiles_dir, &dotlet.name);
+
+    println!("configs_path: {}", &configs_path);
+    let entries = fs::read_dir(configs_path)?;
+
+    let configs = entries.fold(vec![], |mut acc, entry| {
+        match entry {
+            Ok(entry) => {
+                let origin = entry.path();
+                let link = origin.strip_prefix(&config.dotfiles_dir).unwrap().to_owned();
+                let link = Path::new(&config.home_dir).join(link);
+
+                acc.push(DotletConfigV2 { link, origin });
+            },
+            Err(err) => {
+                eprintln!("Failed to read {} config. Cause:\n{:#}", &dotlet.name, err);
+            }
+        }
+        acc
+    });
+
+    Ok(configs)
+}
+
+fn link_configs_to_home(config: &Config) -> State {
     let mut state = State {
         linked_configs: vec![],
         backup_configs: vec![],
@@ -90,7 +125,7 @@ fn link_configs_to_home(config: &Config) -> Result<State, io::Error> {
 
     filter_dotlets_by_profile(&config)
         .iter()
-        .fold(vec![], |mut acc, dotlet| {
+        .for_each(|dotlet| {
             dotlet.configs.iter().for_each(|dotlet_config| {
                 let link = format!("{}/{}", &config.home_dir, &dotlet_config.to);
                 let origin = format!(
@@ -106,21 +141,32 @@ fn link_configs_to_home(config: &Config) -> Result<State, io::Error> {
                         .and_then(|path| fs::create_dir_all(&path).ok());
 
                     match fs::rename(&link, &backup) {
-                        Ok(_) => state.backup_configs.push(backup),
-                        Err(_) => eprintln!("Failed to backup {}", backup)
+                        Ok(_) => {
+                            state.backup_configs.push(backup);
+                        },
+                        Err(err) => {
+                            eprintln!("Failed to backup {}. Cause:\n{:#}", backup, err);
+                        }
                     }
                 };
 
-                fs::create_dir_all(Path::new(&link).parent().unwrap()).unwrap();
+                Path::new(&link)
+                    .parent()
+                    .and_then(|path| fs::create_dir_all(&path).ok());
 
-                let result = unix::fs::symlink(origin, &link);
-                acc.push(result);
-                state.linked_configs.push(link);
+
+                match unix::fs::symlink(&origin, &link) {
+                    Ok(_) => {
+                        state.linked_configs.push(link);
+                    },
+                    Err(err) => {
+                        eprintln!("Could not link {} to {}. Cause:\n{:#}", &origin, &link, err);
+                    }
+                }
             });
-            acc
         });
 
-    Ok(state)
+    state
 }
 
 fn remove_links(links: &Vec<String>) {
@@ -128,7 +174,7 @@ fn remove_links(links: &Vec<String>) {
         let result = fs::remove_file(&link);
 
         if let Err(err) = result {
-            eprintln!("Failed to remove {}: {}", link, err);
+            eprintln!("Failed to remove {}. Cause:\n{:#}", link, err);
         }
     });
 }
@@ -142,7 +188,7 @@ fn remove_old_links(state_file: &str) -> Result<(), Box<dyn Error>> {
         match old_state {
             Ok(state) => remove_links(&state.linked_configs),
             Err(err) => {
-                eprintln!("Failed to read the state file {}: {}", &state_file, err);
+                eprintln!("Failed to read the state file {}. Cause:\n{:#}", &state_file, err);
             }
         }
     }
@@ -164,7 +210,7 @@ fn restore(file: &str) -> Result<State, Box<dyn Error>> {
 
 pub fn install(config: &Config) -> Result<(), Box<dyn Error>> {
     remove_old_links(&config.state_file)?;
-    let state = link_configs_to_home(&config)?;
+    let state = link_configs_to_home(&config);
     save(&config.state_file, &state)?;
     Ok(())
 }
@@ -241,7 +287,7 @@ mod test {
         ];
         config.dotlets.append(&mut dotlets);
 
-        link_configs_to_home(&config).unwrap();
+        link_configs_to_home(&config);
 
         let expected_config_links = [
             ".config_file",
@@ -276,7 +322,7 @@ mod test {
             }],
         });
 
-        link_configs_to_home(&config).unwrap();
+        link_configs_to_home(&config);
 
         assert!(
             match fs::symlink_metadata(format!("{}/.config_dir/config_dir/", &config.home_dir)) {
@@ -301,7 +347,7 @@ mod test {
         fs::create_dir(format!("{}/.config_dir", &config.home_dir)).unwrap();
         fs::File::create(format!("{}/.config_dir/.config_file", &config.home_dir)).unwrap();
 
-        link_configs_to_home(&config).unwrap();
+        link_configs_to_home(&config);
 
         assert!(
             fs::metadata(format!("{}/.config_dir/.config_file", &config.backup_dir))
@@ -351,7 +397,7 @@ mod test {
                 to: ".config_dir/config_dir/.config_file".to_string(),
             }],
         });
-        let state = link_configs_to_home(&config).unwrap();
+        let state = link_configs_to_home(&config);
         fs::create_dir_all(Path::new(&config.state_file).parent().unwrap()).unwrap();
         save(&config.state_file, &state).unwrap();
 
@@ -402,31 +448,51 @@ mod test {
         });
         config.profile_name = "venus".to_string();
 
-        link_configs_to_home(&config).unwrap();
+        link_configs_to_home(&config);
 
         let config_exists = Path::new(&format!(
             "{}/{}",
             &config.home_dir,
             ".config_file".to_string()
         ))
-        .try_exists()
-        .unwrap();
+            .try_exists()
+            .unwrap();
         assert!(config_exists);
         let config_exists = Path::new(&format!(
             "{}/{}",
             &config.home_dir,
             ".config_dir/.config_file".to_string()
         ))
-        .try_exists()
-        .unwrap();
+            .try_exists()
+            .unwrap();
         assert!(!config_exists);
         let config_exists = Path::new(&format!(
             "{}/{}",
             &config.home_dir,
             ".config_dir/config_dir/.config_file".to_string()
         ))
-        .try_exists()
-        .unwrap();
+            .try_exists()
+            .unwrap();
         assert!(!config_exists);
+    }
+
+    #[test]
+    fn collect_configs_test() {
+        let dotlet = DotletV2 {
+            name: "i3".to_string(),
+        };
+        let config = create_test_config("collect_configs");
+        let expected_result = vec![DotletConfigV2 {link: Path::new("").to_owned(), origin:  Path::new("").to_owned()}];
+
+        let actual_result = collect_configs(&dotlet, &config).unwrap();
+
+        assert_ne!(actual_result.len(), 0);
+        actual_result
+            .iter()
+            .zip(expected_result.iter())
+            .for_each(|(actual_dotlet, expected_dotlet)| {
+                assert_eq!(actual_dotlet.link, expected_dotlet.link);
+                assert_eq!(actual_dotlet.origin, expected_dotlet.origin);
+            });
     }
 }

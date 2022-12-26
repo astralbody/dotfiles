@@ -1,9 +1,11 @@
-use std::fs;
+use std::{fs, error::Error};
 
 use clap::{Parser};
-use dot::{Config, Dotlet, Profile};
+use dot::{Config, Dotlet, Profile, install};
 use serde::{Deserialize, Serialize};
 /* use dot::{Config,get_dotlets}; */
+
+extern crate exitcode;
 
 // Algorithm:
 // 1. Collect all dotlets in dotfiles
@@ -16,8 +18,8 @@ use serde::{Deserialize, Serialize};
 
 // TODO:
 // - [x] create config
+// - [x] error handling
 // - [ ] add unit and integration tests
-// - [ ] error handling
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -47,20 +49,20 @@ struct ConfigFile {
     profiles: Vec<Profile>
 }
 
-fn parse_config_file(config_path: &str) -> ConfigFile {
-    let config_file = fs::read_to_string(&config_path).unwrap();
-    let config_file: ConfigFile = ron::from_str(&config_file).unwrap();
-    return config_file
+fn parse_config_file(config_path: &str) -> Result<ConfigFile, Box<dyn Error>>{
+    let config_file = fs::read_to_string(&config_path)?;
+    let config_file: ConfigFile = ron::from_str(&config_file)?;
+    Ok(config_file)
 }
 
-fn build_config() -> Config {
+fn build_config() -> Result<Config, Box<dyn Error>> {
     let args = Args::parse();
-    let config_file = parse_config_file(&args.config);
+    let config_file = parse_config_file(&args.config)?;
 
     let backup_dir = args.backup.or(Some(format!("{}/.local/share/backup", args.home))).unwrap();
     let state_file = args.state.or(Some(format!("{}/.local/share/backup", args.home))).unwrap();
 
-    Config {
+    Ok(Config {
         dotfiles_dir: args.dotfiles,
         home_dir: args.home,
         profile_name: args.profile,
@@ -68,21 +70,25 @@ fn build_config() -> Config {
         state_file,
         dotlets: config_file.dotlets,
         profiles: config_file.profiles
-    }
+    })
 }
 
-fn run() {
-    let config = build_config();
-    println!("{:?}", config);
+fn run() -> Result<(), Box<dyn Error>> {
+    let config = build_config()?;
+    install(&config)?;
+    Ok(())
 }
 
 fn main() {
-    run();
-    /* let config = Config::build("../", "").unwrap_or_else(|err| {
-        println!("Problem parsing arguments: {err}");
-        process::exit(1);
-    }); */
-
-    /* let dotfiles_dirs = get_dotlets(config);
-    println!("{:?}", dotfiles_dirs); */
+    let result = run();
+    match result {
+        Ok(_) => {
+            println!("Done!");
+            std::process::exit(exitcode::OK);
+        }
+        Err(err) => {
+            eprintln!("{:#}", err);
+            std::process::exit(1);
+        }
+    }
 }

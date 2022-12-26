@@ -19,7 +19,7 @@
 	"explorer.confirmDelete": false,
 	"typescript.updateImportsOnFileMove.enabled": "always",
 	"javascript.updateImportsOnFileMove.enabled": "always",
-	"cSpell.userWords": [],
+	"cSpell.userWords": ["exitcode"],
 	"explorer.confirmDragAndDrop": false,
 	// "files.autoSave": "afterDelay",
 	"gitlens.remotes": [

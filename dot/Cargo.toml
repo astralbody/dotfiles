@@ -9,3 +9,4 @@ edition = "2021"
 clap = { version = "4.0.29", features = ["derive"] }
 ron = "0.8"
 serde = { version = "1", features = ["derive"] }
+exitcode = "1.1.2"

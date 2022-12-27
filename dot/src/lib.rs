@@ -95,7 +95,6 @@ fn filter_dotlets_by_profile(config: &Config) -> Vec<&Dotlet> {
 fn collect_configs(dotlet: &DotletV2, config: &Config) -> Result<Vec<DotletConfigV2>, std::io::Error> {
     let configs_path = format!("{}/{}/config", &config.dotfiles_dir, &dotlet.name);
 
-    println!("configs_path: {}", &configs_path);
     let entries = fs::read_dir(configs_path)?;
 
     let configs = entries.fold(vec![], |mut acc, entry| {
@@ -482,14 +481,21 @@ mod test {
             name: "i3".to_string(),
         };
         let config = create_test_config("collect_configs");
-        let expected_result = vec![DotletConfigV2 {link: Path::new("").to_owned(), origin:  Path::new("").to_owned()}];
 
+        let link = format!("{}/.config/i3/config", config.home_dir);
+        let origin = format!("{}/i3/config/config", config.dotfiles_dir);
+        let expected_result = vec![
+            DotletConfigV2 {
+                link: Path::new(&link).to_owned(),
+                origin: Path::new(&origin).to_owned()
+            }
+        ];
         let actual_result = collect_configs(&dotlet, &config).unwrap();
 
         assert_ne!(actual_result.len(), 0);
-        actual_result
+        expected_result
             .iter()
-            .zip(expected_result.iter())
+            .zip(actual_result.iter())
             .for_each(|(actual_dotlet, expected_dotlet)| {
                 assert_eq!(actual_dotlet.link, expected_dotlet.link);
                 assert_eq!(actual_dotlet.origin, expected_dotlet.origin);

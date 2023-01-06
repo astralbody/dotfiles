@@ -10,7 +10,6 @@
 	"code-eol.newlineCharacter": "¬",
 	"code-eol.returnCharacter": "¤",
 	"code-eol.crlfCharacter": "¤¬",
-	"workbench.iconTheme": "vs-minimal",
 	"editor.fontFamily": "'Fira Code', Consolas",
 	"editor.fontSize": 17,
 	"editor.fontLigatures": true,
@@ -63,7 +62,8 @@
 		"*.py": "python",
 		".gitconfig": "plaintext",
 		".gitconfig_captify": "plaintext",
-		"gitconfig": "plaintext"
+		"gitconfig": "plaintext",
+		"*.conf": "plaintext"
 	},
 	"python.formatting.provider": "black",
 	"editor.formatOnSave": true,
@@ -87,7 +87,7 @@
 		"editor.defaultFormatter": "ms-azuretools.vscode-docker"
 	},
 	"window.titleBarStyle": "custom",
-	"workbench.colorTheme": "Tokyo Night Storm",
+	"workbench.colorTheme": "Gruvbox Dark Soft",
 	"editor.tokenColorCustomizations": {
 		"[Catppuccin Frappé][Catppuccin Macchiato][Catppuccin Mocha]": {
 			"textMateRules": [

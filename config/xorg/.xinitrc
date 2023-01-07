@@ -35,5 +35,5 @@ setxkbmap -layout us,ua -option grp:caps_toggle
 nvidia-settings --load-config-only
 xrandr --output DP-0 --mode 2560x1440 --rate 165.08
 xrandr --output DP-4 --mode 2560x1440 --rate 165.08 --left-of DP-0
-
+sleep 1
 exec i3

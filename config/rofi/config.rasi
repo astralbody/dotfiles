@@ -149,3 +149,5 @@ configuration {
       sorting-method:    "name";
   }
 }
+
+@theme "~/.config/rofi/gruvbox_dark_soft_theme.rasi"

@@ -19,3 +19,8 @@ I use a lot of tools from [the modern unix](https://github.com/ibraheemdev/moder
 ## References
 
 -   [Commit Message Format](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#-commit-message-format)
+
+## Gruvbox themes
+
+- [Rofi](https://github.com/bardisty/gruvbox-rofi)
+- [Kitty](https://github.com/dexpota/kitty-themes#gruvbox-dark)

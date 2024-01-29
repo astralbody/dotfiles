@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# If set, the pattern ** used in a pathname expansion context will match all files and zero or more directories
+# and subdirectories.  If the pattern is followed by a /, only directories and subdirectories match
+shopt -s globstar
+
+# Bash replaces directory names with the results of word expansion when performing filename completion
+# Otherwise, It will escape `$` in variable names when pressing tab
+shopt -s direxpand
+
+export DOTFILES=$(dirname {{ .chezmoi.sourceDir }})
+
+source_lib() {
+	local lib
+	for lib in "$DOTFILES"/scripts/bash/{env,aliases,utils}.bash; do
+		. "$lib"
+	done
+}
+
+init() {
+	local lib
+	for lib in "$DOTFILES"/scripts/bash/init/*.bash; do
+		. "$lib"
+	done
+}
+{{ if eq .chezmoi.osRelease.id "arch" }}
+upgrade_command_not_found() {
+	# Automatically seach repositories when "Command not found"
+	. /usr/share/doc/pkgfile/command-not-found.bash
+}
+{{- end }}
+
+source_lib
+init_paths
+{{- if eq .chezmoi.osRelease.id "arch" }}
+upgrade_command_not_found
+{{- end }}
+init

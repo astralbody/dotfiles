@@ -1,0 +1,9 @@
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/astralbody
+
+Host captify
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/captify

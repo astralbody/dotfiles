@@ -1,0 +1,8 @@
+[user]
+	name = Artem Kryvchun
+	email = door2cosmos@gmail.com
+	username = astralbody
+[core]
+	editor = nano
+[init]
+	defaultBranch = main

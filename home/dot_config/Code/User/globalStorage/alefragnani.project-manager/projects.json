@@ -1,0 +1,72 @@
+[
+	{
+		"name": "wiki",
+		"rootPath": "~/Projects/wiki/wiki/dendron.code-workspace",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "python",
+		"rootPath": "~/Projects/python",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "rust",
+		"rootPath": "~/Projects/rust",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/apps",
+		"rootPath": "~/Projects/captify/apps",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/migrations",
+		"rootPath": "~/Projects/captify/migrations",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/poly",
+		"rootPath": "~/Projects/captify/poly",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "captify/wiki",
+		"rootPath": "~/Projects/wiki/captify/dendron.code-workspace",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "gesture",
+		"rootPath": "~/Projects/gesture",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "nodejs",
+		"rootPath": "~/Projects/nodejs/nodejs.code-workspace",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "dotfiles",
+		"rootPath": "~/.local/share/chezmoi",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	}
+]

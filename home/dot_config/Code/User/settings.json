@@ -1,0 +1,116 @@
+{
+	"files.trimFinalNewlines": true,
+	"files.insertFinalNewline": true,
+	"editor.insertSpaces": true,
+	"editor.renderWhitespace": "all",
+	"editor.suggestSelection": "first",
+	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+	"editor.minimap.enabled": false,
+	"files.eol": "\n",
+	"code-eol.newlineCharacter": "¬",
+	"code-eol.returnCharacter": "¤",
+	"code-eol.crlfCharacter": "¤¬",
+	"editor.fontFamily": "'Iosevka', 'Consolas'",
+	"editor.fontSize": 16,
+	"editor.fontLigatures": true,
+	"editor.fontWeight": 400,
+	"terminal.integrated.fontFamily": "'Iosevka', 'Consolas'",
+	"terminal.integrated.fontSize": 16,
+	"explorer.confirmDelete": false,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"cSpell.userWords": [
+		"Aggs",
+		"dotfiles",
+		"exitcode",
+		"polybar",
+		"rofi"
+	],
+	"explorer.confirmDragAndDrop": false,
+	"gitlens.remotes": [
+		{
+			"domain": "captify",
+			"type": "Custom",
+			"name": "Captify",
+			"protocol": "https",
+			"urls": {
+				"repository": "https://github.com/${repo}",
+				"branches": "https://github.com/${repo}/branches",
+				"branch": "https://github.com/${repo}/commits/${branch}",
+				"commit": "https://github.com/${repo}/commit/${id}",
+				"file": "https://github.com/${repo}?path=${file}${line}",
+				"fileInBranch": "https://github.com/${repo}/blob/${branch}/${file}${line}",
+				"fileInCommit": "https://github.com/${repo}/blob/${id}/${file}${line}",
+				"fileLine": "#L${line}",
+				"fileRange": "#L${start}-L${end}"
+			}
+		}
+	],
+	"gitlens.codeLens.enabled": false,
+	"git.autofetch": true,
+	"editor.bracketPairColorization.enabled": true,
+	"redhat.telemetry.enabled": false,
+	"javascript.validate.enable": false,
+	"gitlens.advanced.messages": {
+		"suppressGitMissingWarning": true
+	},
+	"[python]": {
+		"editor.tabSize": 4,
+		"editor.formatOnPaste": false,
+		"editor.formatOnSaveMode": "file",
+		"editor.formatOnType": true
+	},
+	"files.trimTrailingWhitespace": true,
+	"files.associations": {
+		"*.py": "python",
+		".gitconfig": "plaintext",
+		".gitconfig_captify": "plaintext",
+		"gitconfig": "plaintext",
+		"fonts.conf": "xml",
+		".Xresources": "plaintext",
+		"config": "plaintext"
+	},
+	"python.formatting.provider": "black",
+	"markdown.experimental.validate.enabled": true,
+	"shellcheck.enable": true,
+	"shellcheck.enableQuickFix": true,
+	"shellcheck.run": "onSave",
+	"shellcheck.exclude": [],
+	"git.ignoreMissingGitWarning": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "explicit",
+		"source.fixAll.shellcheck": "explicit",
+		"source.fixAll.eslint": "explicit"
+	},
+	"typescript.suggest.paths": false,
+	"javascript.suggest.paths": false,
+	"shellformat.useEditorConfig": true,
+	"editor.stickyScroll.enabled": true,
+	"[dockerfile]": {
+		"editor.defaultFormatter": "ms-azuretools.vscode-docker"
+	},
+	"workbench.colorTheme": "Gruvbox Dark Soft",
+	"window.zoomLevel": 1,
+	"editor.inlayHints.enabled": "off",
+	"[rust]": {
+		"editor.defaultFormatter": "rust-lang.rust-analyzer",
+		"editor.formatOnSave": true,
+		"editor.formatOnSaveMode": "file"
+	},
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "modificationsIfAvailable",
+	"window.titleBarStyle": "custom",
+	"githubPullRequests.pullBranch": "never",
+	"vsicons.dontShowNewVersionMessage": true,
+	"workbench.editor.empty.hint": "hidden",
+	"json.format.enable": false,
+
+	// ESlint
+	"eslint.format.enable": true,
+	"tslint.enable": false,
+	"eslint.enable": true,
+	"eslint.debug": true,
+	"eslint.workingDirectories": [{ "mode": "auto" }],
+	"[typescript]": { "editor.defaultFormatter": "dbaeumer.vscode-eslint" },
+	"[javascript]": { "editor.defaultFormatter": "dbaeumer.vscode-eslint" },
+}

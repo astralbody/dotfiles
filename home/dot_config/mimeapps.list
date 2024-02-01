@@ -1,0 +1,8 @@
+[Default Applications]
+application/pdf=zathura.desktop
+image/*=feh.desktop
+application/x-fictionbook+xml=coolreader.desktop
+application/x-zip-compressed-fb2=coolreader.desktop
+test/xml=coolreader.desktop
+x-scheme-handler/postman=Postman.desktop
+x-scheme-handler/webcal=chromium.desktop

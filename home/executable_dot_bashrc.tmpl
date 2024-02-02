@@ -11,6 +11,11 @@ shopt -s globstar
 # Otherwise, It will escape `$` in variable names when pressing tab
 shopt -s direxpand
 
+{{if eq .chezmoi.osRelease.id "ubuntu" }}
+. /usr/share/bash-completion/bash_completion
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+{{- end }}
+
 export BASH_SCRIPTS=$(dirname {{ .chezmoi.sourceDir }})/scripts/bash
 . $BASH_SCRIPTS/init.bash
 

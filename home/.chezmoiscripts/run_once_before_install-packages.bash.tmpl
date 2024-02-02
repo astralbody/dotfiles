@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+{{- if eq .chezmoi.osRelease.id "ubuntu" }}
+sudo apt install bash-completion build-essential procps curl file git pipenv zoxide exa ripgrep fzf jq xh
+brew install broot starship bat mcfly dust duf choose-rust sd fd
+
+if [ ! -e "$HOME/.config/broot/launcher/bash/br" ]; then
+    broot --install
+fi
+{{- end }}

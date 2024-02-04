@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+{{- if eq .chezmoi.osRelease.id "ubuntu" }}
+font_dir=/usr/local/share/fonts/iosevka
+if fd -e ttf --max-results 1 --max-depth 1 . $font_dir; then
+    echo "Iosevka TTF files exist in $font_dir"
+    exit 0;
+fi
+
+cd $HOME/Downloads
+sudo rm -rf iosevka iosevka.zip
+download_url=$(curl -s https://api.github.com/repos/be5invis/Iosevka/releases/latest | jq -r '.assets[] | select(.browser_download_url | test("zip$")) | .browser_download_url' | rg "PkgTTF-Iosevka-")
+xh --output iosevka.zip --download $download_url
+atool -x -e iosevka.zip
+sudo mv iosevka /usr/local/share/fonts/
+sudo fc-cache -fv
+sudo rm iosevka.zip
+cd -
+{{- end }}
